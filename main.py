@@ -1,90 +1,88 @@
 #!/user/bin/env python3
 """Game objects and game loop"""
-import random
 import sys
-import timeit
 
-import pygame as pg
-from pygame import Vector2 as vec
+import pygame
 
 import config as cf
+from characters import Ally, Enemy, Player
 from projectiles import FrozenOrb, IceBolt
 
-def handle_events(movement):
-  for event in pg.event.get():
+
+def print_debug(player):
+  print("Movement:", player.movement)
+  print("Acceleration:", player.acceleration)
+  print("Velocity:", player.velocity)
+  print("Position:", player.position)
+
+def handle_events(player, collidables):
+  for event in pygame.event.get():
     match event.type:
-      case pg.QUIT:
-        pg.quit()
+    
+      case pygame.QUIT:
+        pygame.quit()
         sys.exit()
-      case pg.KEYDOWN:
+        
+      case pygame.KEYDOWN:
         match event.key:
-          case pg.K_ESCAPE:
-            pg.quit()
+          case pygame.K_ESCAPE:
+            pygame.quit()
             sys.exit()
-          case pg.K_LEFT:
-            movement['left'] = True
-          case pg.K_RIGHT:
-            movement['right'] = True
-          case pg.K_UP:
-            movement['up'] = True
-          case pg.K_DOWN:
-            movement['down'] = True
+          case pygame.K_LEFT:
+            player.movement['left'] = True
+          case pygame.K_RIGHT:
+            player.movement['right'] = True
+          case pygame.K_UP:
+            player.movement['up'] = True
+          case pygame.K_DOWN:
+            player.movement['down'] = True
           
-      case pg.KEYUP:
+      case pygame.KEYUP:
         match event.key:
-          case pg.K_LEFT:
-            movement['left'] = False
-          case pg.K_RIGHT:
-            movement['right'] = False
-          case pg.K_UP:
-            movement['up'] = False
-          case pg.K_DOWN:
-            movement['down'] = False
+          case pygame.K_LEFT:
+            player.movement['left'] = False
+          case pygame.K_RIGHT:
+            player.movement['right'] = False
+          case pygame.K_UP:
+            player.movement['up'] = False
+          case pygame.K_DOWN:
+            player.movement['down'] = False
+
+      case pygame.MOUSEBUTTONDOWN:
+        match event.button:
+          case 1:
+            ice_bolt = IceBolt((100, 200), (1, 3), (0, 0), (5, 5), 2)
+            collidables.append(ice_bolt)
+          case 3:
+            frozen_orb = FrozenOrb((200, 100), (5, 0), (0, 0), (20, 20), 10)
+            collidables.append(frozen_orb)
 
 
-def move_character(movement, position, speed):
-  if movement['left']:
-    position[0] -= speed
-  if movement['right']:
-    position[0] += speed
-  if movement['up']:
-    position[1] -= speed
-  if movement['down']:
-    position[1] += speed
 
 
 def main():
 
-  background = pg.Surface(cf.SCREEN.get_size()).convert()
+  background = pygame.Surface(cf.SCREEN.get_size()).convert()
   background.fill(cf.BLACK)
 
-  character_position = [100, 100]
-  character_speed = 10
+  player = Player((100, 100), (0, 0), (0, 0), (50, 50))
 
-  frozen_orb = FrozenOrb((200, 100), (0, 0), 20, 10)
-  ice_bolt = IceBolt((100, 200), (0, 0), 5, 2)
-
-  move_state = {
-    'left': False,
-    'right': False,
-    'up': False,
-    'down': False
-  }
+  collidables = [player]
   
   running = True
 
   while running:
     cf.CLOCK.tick(30)
-    handle_events(move_state)
+    handle_events(player, collidables)
 
-    move_character(move_state, character_position, character_speed)
 
     cf.SCREEN.blit(background, (0, 0))
-    pg.draw.circle(cf.SCREEN, cf.RED, character_position, 20)
-    frozen_orb.draw(cf.SCREEN)
-    ice_bolt.draw(cf.SCREEN)
 
-    pg.display.flip()
+    for collidable in collidables:
+      collidable.draw(cf.SCREEN)
+      collidable.update()
+
+    pygame.display.flip()
 
 if __name__ == "__main__":
   main()
