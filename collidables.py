@@ -43,6 +43,11 @@ class Collidable:
   @acceleration.setter
   def acceleration(self, value):
     self._acceleration = vec(value)
+    if self._acceleration.length() == 0:
+      self._velocity = self._velocity // 2
+    # something like this? not sure if this is where to handle it
+    # this is essentially saying that if not accelerating, the object
+    # should brake (friction), and come to a stop
 
   @property
   def size(self):
