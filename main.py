@@ -1,5 +1,6 @@
 #!/user/bin/env python3
 """Game objects and game loop"""
+import asyncio
 import sys
 
 import pygame
@@ -60,7 +61,7 @@ def handle_events(player, collidables):
 
 
 
-def main():
+async def main():
 
   background = pygame.Surface(cf.SCREEN.get_size()).convert()
   background.fill(cf.BLACK)
@@ -83,6 +84,7 @@ def main():
       collidable.update()
 
     pygame.display.flip()
+    await asyncio.sleep(0)
 
 if __name__ == "__main__":
-  main()
+  asyncio.run(main())

@@ -1,6 +1,7 @@
+from pygame import Vector2 as vec
+
 from collidables import Collidable
 
-from pygame import Vector2 as vec
 
 class Character(Collidable):
   pass
@@ -28,7 +29,12 @@ class Player(Character):
     if self.movement['down']:
       acceleration_val.y += 1
 
+    if acceleration_val.length() > 0:
+      acceleration_val.normalize()
+      
     self.acceleration = acceleration_val
+
+    # HANDLE VELOCITY NOT SKYROCKETING / VELOCITY CEILING
     self._velocity += self._acceleration
     self._position += self._velocity
 
