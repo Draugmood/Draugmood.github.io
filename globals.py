@@ -16,10 +16,14 @@ WHITE = pg.Color(255, 255, 255)
 
 
 # Text rendering
-def print_text(text, color, text_font, surface, pos):
-  text = text_font.render(text, 1, color)
-  text_pos = text.get_rect(center=pos)
-  surface.blit(text, text_pos)
+def print_text(text, color, text_font, surface, pos, align="center"):
+  rendered_text = text_font.render(text, True, color)
+  text_rect = text.get_rect(center=pos)
+  if align == "center":
+    text_rect.center = pos
+  elif align == "topright":
+    text_rect.topright = pos
+  surface.blit(text_rect, rendered_text)
 
 
 NORMAL_FONT = pg.font.Font(None, 30)
@@ -33,10 +37,12 @@ CLOCK = pg.time.Clock()
 INFO_OBJ = pg.display.Info()
 SCREEN_RECT = pg.Rect(0, 0, INFO_OBJ.current_w, INFO_OBJ.current_h)
 SCREEN = pg.display.set_mode((0, 0), pg.FULLSCREEN)
-FRICTION_COEFFICIENT = 0.9
+FRICTION_COEFFICIENT = 0.8  #lower number = more friction
 
 # Player
 MAX_PLAYER_SPEED = 12
+PLAYER_FULLSTOP_THRESHOLD = 0.1
+PLAYER_ACCELERATION = 3
 
 
 def load_image(name):

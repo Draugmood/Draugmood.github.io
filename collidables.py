@@ -43,12 +43,20 @@ class Collidable:
   @acceleration.setter
   def acceleration(self, value):
     self._acceleration = vec(value)
-    if self._acceleration.length() == 0:
-      self._velocity *= glb.FRICTION_COEFFICIENT
+
+    if self._acceleration.x == 0:
+      self._velocity.x *= glb.FRICTION_COEFFICIENT
 
       # Make sure we eventually full stop
-      if self._velocity.length_squared() < 0.01:
-        self._velocity = vec(0, 0)
+      if self._velocity.x < glb.PLAYER_FULLSTOP_THRESHOLD:
+        self._velocity.x = 0
+
+    if self._acceleration.y == 0:
+      self._velocity.y *= glb.FRICTION_COEFFICIENT
+
+      # Make sure we eventually full stop
+      if self._velocity.y < glb.PLAYER_FULLSTOP_THRESHOLD:
+        self._velocity.y = 0
 
   @property
   def size(self):

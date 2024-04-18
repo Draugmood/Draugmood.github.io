@@ -18,13 +18,13 @@ class Player(Character):
   def update(self):
     acceleration_val = vec(0, 0)
     if self.movement['left']:
-      acceleration_val.x -= 2
+      acceleration_val.x -= glb.PLAYER_ACCELERATION
     if self.movement['right']:
-      acceleration_val.x += 2
+      acceleration_val.x += glb.PLAYER_ACCELERATION
     if self.movement['up']:
-      acceleration_val.y -= 2
+      acceleration_val.y -= glb.PLAYER_ACCELERATION
     if self.movement['down']:
-      acceleration_val.y += 2
+      acceleration_val.y += glb.PLAYER_ACCELERATION
 
     if acceleration_val.length() > 0:
       acceleration_val.normalize()
