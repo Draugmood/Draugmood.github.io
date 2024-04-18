@@ -37,11 +37,11 @@ CLOCK = pg.time.Clock()
 INFO_OBJ = pg.display.Info()
 SCREEN_RECT = pg.Rect(0, 0, INFO_OBJ.current_w, INFO_OBJ.current_h)
 SCREEN = pg.display.set_mode((0, 0), pg.FULLSCREEN)
-FRICTION_COEFFICIENT = 0.8  #lower number = more friction
+FRICTION_COEFFICIENT = 0.7  #lower number = more friction
 
 # Player
 MAX_PLAYER_SPEED = 12
-PLAYER_FULLSTOP_THRESHOLD = 0.01
+PLAYER_FULLSTOP_THRESHOLD = 0.1
 PLAYER_ACCELERATION = 3
 
 

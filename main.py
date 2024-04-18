@@ -10,12 +10,6 @@ from characters import Ally, Enemy, Player
 from projectiles import FrozenOrb, IceBolt
 
 
-def print_debug(player):
-  print("Movement:", player.movement)
-  print("Acceleration:", player.acceleration)
-  print("Velocity:", player.velocity)
-  print("Position:", player.position)
-
 def handle_events(player, collidables):
   for event in pygame.event.get():
     match event.type:

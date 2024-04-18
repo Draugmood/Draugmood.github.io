@@ -48,14 +48,14 @@ class Collidable:
       self._velocity.x *= glb.FRICTION_COEFFICIENT
 
       # Make sure we eventually full stop
-      if self._velocity.x < glb.PLAYER_FULLSTOP_THRESHOLD:
+      if abs(self._velocity.x) < glb.PLAYER_FULLSTOP_THRESHOLD:
         self._velocity.x = 0
 
     if self._acceleration.y == 0:
       self._velocity.y *= glb.FRICTION_COEFFICIENT
 
       # Make sure we eventually full stop
-      if self._velocity.y < glb.PLAYER_FULLSTOP_THRESHOLD:
+      if abs(self._velocity.y) < glb.PLAYER_FULLSTOP_THRESHOLD:
         self._velocity.y = 0
 
   @property

@@ -18,22 +18,23 @@ class Player(Character):
   def update(self):
     acceleration_val = vec(0, 0)
     if self.movement['left']:
-      acceleration_val.x -= glb.PLAYER_ACCELERATION
+      acceleration_val.x -= 1
     if self.movement['right']:
-      acceleration_val.x += glb.PLAYER_ACCELERATION
+      acceleration_val.x += 1
     if self.movement['up']:
-      acceleration_val.y -= glb.PLAYER_ACCELERATION
+      acceleration_val.y -= 1
     if self.movement['down']:
-      acceleration_val.y += glb.PLAYER_ACCELERATION
+      acceleration_val.y += 1
 
     if acceleration_val.length() > 0:
-      acceleration_val.normalize()
+      acceleration_val = acceleration_val.normalize() * glb.PLAYER_ACCELERATION
 
     self.acceleration = acceleration_val
 
     # HANDLE VELOCITY NOT SKYROCKETING / VELOCITY CEILING
-    if self._velocity.length() <= glb.MAX_PLAYER_SPEED:
-      self._velocity += self._acceleration
+    self._velocity += self._acceleration
+    if self._velocity.length() > glb.MAX_PLAYER_SPEED:
+      self._velocity.scale_to_length(glb.MAX_PLAYER_SPEED)
     self._position += self._velocity
 
 
