@@ -1,6 +1,7 @@
 #!/user/bin/env python3
 """Config file for Mayhem clone"""
 import os
+
 import pygame as pg
 from pygame import Vector2 as vec
 
@@ -32,6 +33,10 @@ CLOCK = pg.time.Clock()
 INFO_OBJ = pg.display.Info()
 SCREEN_RECT = pg.Rect(0, 0, INFO_OBJ.current_w, INFO_OBJ.current_h)
 SCREEN = pg.display.set_mode((0, 0), pg.FULLSCREEN)
+FRICTION_COEFFICIENT = 0.9
+
+# Player
+MAX_PLAYER_SPEED = 12
 
 
 def load_image(name):

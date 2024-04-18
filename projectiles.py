@@ -1,6 +1,6 @@
 import pygame
 
-import config as cf
+import globals as glb
 from collidables import Collidable
 
 
@@ -9,7 +9,7 @@ class Projectile(Collidable):
   def __init__(self, position, velocity, acceleration, size, damage):
     super().__init__(position, velocity, acceleration, size)
     self.damage = damage
-    self.color = cf.WHITE
+    self.color = glb.WHITE
 
   def draw(self, surface):
     # temporary implementation
@@ -20,14 +20,14 @@ class FrozenOrb(Projectile):
 
   def __init__(self, position, velocity, acceleration, size, damage):
     super().__init__(position, velocity, acceleration, size, damage)
-    self.color = cf.BLUE
+    self.color = glb.BLUE
 
 
 class IceBolt(Projectile):
 
   def __init__(self, position, velocity, acceleration, size, damage):
     super().__init__(position, velocity, acceleration, size, damage)
-    self.color = cf.LIGHT_BLUE
+    self.color = glb.LIGHT_BLUE
 
 
 # READY TO TRY AND PUT EVERYTHING INTO MAIN GAME LOOP

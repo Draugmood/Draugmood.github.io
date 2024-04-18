@@ -5,7 +5,7 @@ import sys
 
 import pygame
 
-import config as cf
+import globals as glb
 from characters import Ally, Enemy, Player
 from projectiles import FrozenOrb, IceBolt
 
@@ -63,8 +63,8 @@ def handle_events(player, collidables):
 
 async def main():
 
-  background = pygame.Surface(cf.SCREEN.get_size()).convert()
-  background.fill(cf.BLACK)
+  background = pygame.Surface(glb.SCREEN.get_size()).convert()
+  background.fill(glb.BLACK)
 
   player = Player((100, 100), (0, 0), (0, 0), (50, 50))
 
@@ -73,14 +73,14 @@ async def main():
   running = True
 
   while running:
-    cf.CLOCK.tick(30)
+    glb.CLOCK.tick(30)
     handle_events(player, collidables)
 
 
-    cf.SCREEN.blit(background, (0, 0))
+    glb.SCREEN.blit(background, (0, 0))
 
     for collidable in collidables:
-      collidable.draw(cf.SCREEN)
+      collidable.draw(glb.SCREEN)
       collidable.update()
 
     pygame.display.flip()

@@ -1,7 +1,7 @@
 import pygame
 from pygame import Vector2 as vec
 
-import config as cf
+import globals as glb
 
 
 class Collidable:
@@ -44,10 +44,11 @@ class Collidable:
   def acceleration(self, value):
     self._acceleration = vec(value)
     if self._acceleration.length() == 0:
-      self._velocity = self._velocity // 2
-    # something like this? not sure if this is where to handle it
-    # this is essentially saying that if not accelerating, the object
-    # should brake (friction), and come to a stop
+      self._velocity *= glb.FRICTION_COEFFICIENT
+
+      # Make sure we eventually full stop
+      if self._velocity.length_squared() < 0.01:
+        self._velocity = vec(0, 0)
 
   @property
   def size(self):
@@ -67,7 +68,7 @@ class Collidable:
     self._position += self._velocity
 
   def draw(self, surface):
-    pygame.draw.circle(surface, cf.RED, self._position, self._size[0] // 2)
+    pygame.draw.circle(surface, glb.RED, self._position, self._size[0] // 2)
 
   def collides_with(self, other: 'Collidable') -> bool:
     if not isinstance(other, Collidable):
