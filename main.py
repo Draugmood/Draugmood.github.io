@@ -83,6 +83,17 @@ async def main():
       collidable.draw(glb.SCREEN)
       collidable.update()
 
+    texts = [
+        f"Acceleration: {player.acceleration}",
+        f"Velocity: {player.velocity}",
+        f"X Movement: {'Left' if player.movement['left'] else 'Right' if player.movement['right'] else 'None'}",
+        f"Y Movement: {'Up' if player.movement['up'] else 'Down' if player.movement['down'] else 'None'}"
+    ]
+
+    for i, text in enumerate(texts):
+      glb.print_text(text, glb.WHITE, glb.NORMAL_FONT, glb.SCREEN,
+                 (glb.SCREEN_RECT.width - 10, 10 + i * 30), "topright")
+
     pygame.display.flip()
     await asyncio.sleep(0)
 

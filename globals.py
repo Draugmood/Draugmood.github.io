@@ -18,12 +18,12 @@ WHITE = pg.Color(255, 255, 255)
 # Text rendering
 def print_text(text, color, text_font, surface, pos, align="center"):
   rendered_text = text_font.render(text, True, color)
-  text_rect = text.get_rect(center=pos)
+  text_rect = rendered_text.get_rect(center=pos)
   if align == "center":
     text_rect.center = pos
   elif align == "topright":
     text_rect.topright = pos
-  surface.blit(text_rect, rendered_text)
+  surface.blit(rendered_text, text_rect)
 
 
 NORMAL_FONT = pg.font.Font(None, 30)
@@ -41,7 +41,7 @@ FRICTION_COEFFICIENT = 0.8  #lower number = more friction
 
 # Player
 MAX_PLAYER_SPEED = 12
-PLAYER_FULLSTOP_THRESHOLD = 0.1
+PLAYER_FULLSTOP_THRESHOLD = 0.01
 PLAYER_ACCELERATION = 3
 
 
