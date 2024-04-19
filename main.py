@@ -17,9 +17,8 @@ def aim(position):
   
 
 def handle_events(player, collidables):
-  num_events = 0 #TODO REMOVEME
+
   for event in pygame.event.get():
-    num_events += 1 #TODO REMOVEME
     match event.type:
     
       case pygame.QUIT:
@@ -70,7 +69,6 @@ def handle_events(player, collidables):
 
             collidables.append(frozen_orb)
 
-  print(num_events) #TODO REMOVEME
 
 
 async def main():
@@ -101,7 +99,8 @@ async def main():
         f"Acceleration: {player.acceleration}",
         f"Velocity: {player.velocity}",
         f"X Movement: {'Left' if player.movement['left'] else 'Right' if player.movement['right'] else 'None'}",
-        f"Y Movement: {'Up' if player.movement['up'] else 'Down' if player.movement['down'] else 'None'}"
+        f"Y Movement: {'Up' if player.movement['up'] else 'Down' if player.movement['down'] else 'None'}",
+        f"Rect: {player.rect}"
     ]
 
     for i, text in enumerate(texts):

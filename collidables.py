@@ -26,7 +26,7 @@ class Collidable:
   @position.setter
   def position(self, value: vec):
     self._position.update(value)
-    self._rect.center = (value.x, value.y)
+    self.rect.center = (value.x, value.y)
 
   @property
   def velocity(self):
@@ -46,18 +46,18 @@ class Collidable:
     self._acceleration = vec(value)
 
     if self._acceleration.x == 0:
-      self._velocity.x *= glb.FRICTION_COEFFICIENT
+      self.velocity.x *= glb.FRICTION_COEFFICIENT
 
       # Make sure we eventually full stop
-      if abs(self._velocity.x) < glb.PLAYER_FULLSTOP_THRESHOLD:
-        self._velocity.x = 0
+      if abs(self.velocity.x) < glb.PLAYER_FULLSTOP_THRESHOLD:
+        self.velocity.x = 0
 
     if self._acceleration.y == 0:
-      self._velocity.y *= glb.FRICTION_COEFFICIENT
+      self.velocity.y *= glb.FRICTION_COEFFICIENT
 
       # Make sure we eventually full stop
       if abs(self._velocity.y) < glb.PLAYER_FULLSTOP_THRESHOLD:
-        self._velocity.y = 0
+        self.velocity.y = 0
 
   @property
   def size(self):
@@ -68,17 +68,21 @@ class Collidable:
     self._size = value
     self._rect.size = value
 
-  # METHODS
+  @property
   def rect(self) -> pygame.Rect:
     return self._rect
+  
+  @rect.setter
+  def rect(self, value: pygame.Rect):
+    self._rect = value
 
   def update(self):
-    self._velocity += self._acceleration
-    self._position += self._velocity
+    self.velocity += self.acceleration
+    self.position += self.velocity
 
   def draw(self, surface):
-    pygame.draw.circle(surface, glb.RED, self._position, self._size[0] // 2)
-    pygame.draw.rect(surface, glb.WHITE, self._rect, width=1)
+    pygame.draw.circle(surface, glb.RED, self.position, self.size[0] // 2)
+    pygame.draw.rect(surface, glb.WHITE, self.rect, width=1)
 
   def collides_with(self, other: 'Collidable') -> bool:
     if not isinstance(other, Collidable):

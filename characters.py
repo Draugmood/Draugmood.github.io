@@ -31,10 +31,10 @@ class Player(Character):
     self.acceleration = acceleration_val
 
     # HANDLE VELOCITY NOT SKYROCKETING / VELOCITY CEILING
-    self._velocity += self._acceleration
-    if self._velocity.length() > glb.MAX_PLAYER_SPEED:
-      self._velocity.scale_to_length(glb.MAX_PLAYER_SPEED)
-    self._position += self._velocity
+    self.velocity += self.acceleration
+    if self.velocity.length() > glb.MAX_PLAYER_SPEED:
+      self.velocity.scale_to_length(glb.MAX_PLAYER_SPEED)
+    self.position += self.velocity
 
 
 class Enemy(Character):
