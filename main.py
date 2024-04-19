@@ -13,7 +13,7 @@ from projectiles import FrozenOrb, IceBolt
 
 def aim(position):
   mouse_pos = vec(pygame.mouse.get_pos())
-  return mouse_pos - position
+  return (mouse_pos - position).normalize()
   
 
 def handle_events(player, collidables):
@@ -54,11 +54,20 @@ def handle_events(player, collidables):
       case pygame.MOUSEBUTTONDOWN:
         match event.button:
           case 1:
-            ice_bolt = IceBolt(player.position, aim(player.position), (0, 0), (5, 5), 2)
+            ice_bolt = IceBolt(player.position,
+                               aim(player.position)*glb.PROJECTILE_SPEED,
+                               (0, 0),
+                               (5, 5),
+                               2)
             collidables.append(ice_bolt)
+            
           case 3:
-            frozen_orb = FrozenOrb(
-                player.position, aim(player.position), (0, 0), (20, 20), 10)
+            frozen_orb = FrozenOrb(player.position,
+                                   aim(player.position)*glb.PROJECTILE_SPEED,
+                                   (0, 0),
+                                   (20, 20),
+                                   10)
+
             collidables.append(frozen_orb)
 
   print(num_events) #TODO REMOVEME
