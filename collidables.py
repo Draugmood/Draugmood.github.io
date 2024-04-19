@@ -16,7 +16,7 @@ class Collidable:
     self._acceleration = vec(acceleration)
     self._size = size
     self._rect = pygame.Rect(*position, *size)
-    self._rect.center = (position.x, position.y)
+    self._rect.center = (position[0], position[1])
 
   # PROPERTIES AND SETTERS
   @property
