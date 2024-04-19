@@ -23,30 +23,30 @@ def handle_events(player, collidables):
           case pygame.K_ESCAPE:
             pygame.quit()
             sys.exit()
-          case pygame.K_LEFT:
+          case pygame.K_a:
             player.movement['left'] = True
-          case pygame.K_RIGHT:
+          case pygame.K_d:
             player.movement['right'] = True
-          case pygame.K_UP:
+          case pygame.K_w:
             player.movement['up'] = True
-          case pygame.K_DOWN:
+          case pygame.K_s:
             player.movement['down'] = True
           
       case pygame.KEYUP:
         match event.key:
-          case pygame.K_LEFT:
+          case pygame.K_a:
             player.movement['left'] = False
-          case pygame.K_RIGHT:
+          case pygame.K_d:
             player.movement['right'] = False
-          case pygame.K_UP:
+          case pygame.K_w:
             player.movement['up'] = False
-          case pygame.K_DOWN:
+          case pygame.K_s:
             player.movement['down'] = False
 
       case pygame.MOUSEBUTTONDOWN:
         match event.button:
           case 1:
-            ice_bolt = IceBolt((100, 200), (1, 3), (0, 0), (5, 5), 2)
+            ice_bolt = IceBolt(player.pos, (1, 3), (0, 0), (5, 5), 2)
             collidables.append(ice_bolt)
           case 3:
             frozen_orb = FrozenOrb((200, 100), (5, 0), (0, 0), (20, 20), 10)
@@ -78,6 +78,7 @@ async def main():
       collidable.update()
 
     texts = [
+        f"Position: {player.position}",
         f"Acceleration: {player.acceleration}",
         f"Velocity: {player.velocity}",
         f"X Movement: {'Left' if player.movement['left'] else 'Right' if player.movement['right'] else 'None'}",

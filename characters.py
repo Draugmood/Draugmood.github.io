@@ -1,8 +1,7 @@
 from pygame import Vector2 as vec
 
-from collidables import Collidable
-
 import globals as glb
+from collidables import Collidable
 
 
 class Character(Collidable):
