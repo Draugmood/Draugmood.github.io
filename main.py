@@ -4,14 +4,22 @@ import asyncio
 import sys
 
 import pygame
+from pygame import Vector2 as vec
 
 import globals as glb
 from characters import Ally, Enemy, Player
 from projectiles import FrozenOrb, IceBolt
 
 
+def aim(position):
+  mouse_pos = vec(pygame.mouse.get_pos())
+  return mouse_pos - position
+  
+
 def handle_events(player, collidables):
+  num_events = 0 #TODO REMOVEME
   for event in pygame.event.get():
+    num_events += 1 #TODO REMOVEME
     match event.type:
     
       case pygame.QUIT:
@@ -46,13 +54,14 @@ def handle_events(player, collidables):
       case pygame.MOUSEBUTTONDOWN:
         match event.button:
           case 1:
-            ice_bolt = IceBolt(player.pos, (1, 3), (0, 0), (5, 5), 2)
+            ice_bolt = IceBolt(player.position, aim(player.position), (0, 0), (5, 5), 2)
             collidables.append(ice_bolt)
           case 3:
-            frozen_orb = FrozenOrb((200, 100), (5, 0), (0, 0), (20, 20), 10)
+            frozen_orb = FrozenOrb(
+                player.position, aim(player.position), (0, 0), (20, 20), 10)
             collidables.append(frozen_orb)
 
-
+  print(num_events) #TODO REMOVEME
 
 
 async def main():
@@ -68,6 +77,7 @@ async def main():
 
   while running:
     glb.CLOCK.tick(30)
+
     handle_events(player, collidables)
 
 
