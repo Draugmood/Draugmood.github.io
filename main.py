@@ -77,8 +77,9 @@ async def main():
   background.fill(glb.BLACK)
 
   player = Player((100, 100), (0, 0), (0, 0), (50, 50))
+  enemy = Enemy((400, 400), (0, 0), (0, 0), (50, 50))
 
-  collidables = [player]
+  collidables = [player, enemy]
   
   running = True
 
@@ -88,7 +89,7 @@ async def main():
     handle_events(player, collidables)
 
 
-    glb.SCREEN.blit(background, (0, 0))
+    glb.SCREEN.blit(background,(0, 0))
 
     for collidable in collidables:
       collidable.draw(glb.SCREEN)

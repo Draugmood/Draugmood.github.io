@@ -11,7 +11,7 @@ class Character(Collidable):
 class Player(Character):
 
   def __init__(self, position, velocity, acceleration, size):
-    super().__init__(position, velocity, acceleration, size)
+    super().__init__(position, velocity, acceleration, size, glb.GREEN)
     self.movement = {'left': False, 'right': False, 'up': False, 'down': False}
 
   def update(self):
@@ -38,7 +38,15 @@ class Player(Character):
 
 
 class Enemy(Character):
-  pass
+
+  def __init__(self, position, velocity, acceleration, size):
+    super().__init__(position, velocity, acceleration, size, glb.RED)
+    self.pathfinding = 0
+
+
+  def update(self):
+    pass
+
 
 
 class Ally(Character):

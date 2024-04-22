@@ -13,6 +13,7 @@ MAROON = pg.Color(136, 0, 21)
 RED = pg.Color(255, 0, 0)
 BLACK = pg.Color(0, 0, 0)
 WHITE = pg.Color(255, 255, 255)
+GREEN = pg.Color(0, 128, 0)
 
 
 # Text rendering

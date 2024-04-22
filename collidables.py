@@ -10,13 +10,14 @@ class Collidable:
   with automatic updates to bounding rectangle for collision detection.
   """
 
-  def __init__(self, position, velocity, acceleration, size):
+  def __init__(self, position, velocity, acceleration, size, color):
     self._position = vec(position)
     self._velocity = vec(velocity)
     self._acceleration = vec(acceleration)
     self._size = size
     self._rect = pygame.Rect(*position, *size)
     self._rect.center = (position[0], position[1])
+    self._color = color
 
   # PROPERTIES AND SETTERS
   @property
@@ -81,10 +82,10 @@ class Collidable:
     self.position += self.velocity
 
   def draw(self, surface):
-    pygame.draw.circle(surface, glb.RED, self.position, self.size[0] // 2)
+    pygame.draw.circle(surface, self._color, self.position, self.size[0] // 2)
     pygame.draw.rect(surface, glb.WHITE, self.rect, width=1)
 
   def collides_with(self, other: 'Collidable') -> bool:
     if not isinstance(other, Collidable):
       return False
-    return self.rect().colliderect(other.rect())
+    return self.rect.colliderect(other.rect)
