@@ -1,3 +1,4 @@
+import pygame
 from pygame import Vector2 as vec
 
 import globals as glb
@@ -35,6 +36,10 @@ class Player(Character):
     if self.velocity.length() > glb.MAX_PLAYER_SPEED:
       self.velocity.scale_to_length(glb.MAX_PLAYER_SPEED)
     self.position += self.velocity
+
+  def draw(self, surface):
+    super().draw(surface)
+    pygame.draw.rect(surface, glb.WHITE, self.rect, width=1)
 
 
 class Enemy(Character):

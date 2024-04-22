@@ -76,8 +76,10 @@ async def main():
   background = pygame.Surface(glb.SCREEN.get_size()).convert()
   background.fill(glb.BLACK)
 
-  player = Player((100, 100), (0, 0), (0, 0), (50, 50))
-  enemy = Enemy((400, 400), (0, 0), (0, 0), (50, 50))
+  screen_center = vec(glb.SCREEN.get_size()) / 2
+
+  player = Player(screen_center, (0, 0), (0, 0), (50, 50))
+  enemy = Enemy((200, 200), (0, 0), (0, 0), (50, 50))
 
   collidables = [player, enemy]
   
