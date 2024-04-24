@@ -36,7 +36,6 @@ class Collidable:
   @velocity.setter
   def velocity(self, value):
     self._velocity = value
-    #nothing more here?
 
   @property
   def acceleration(self):

@@ -44,14 +44,16 @@ class Player(Character):
 
 class Enemy(Character):
 
-  def __init__(self, position, velocity, acceleration, size):
+  def __init__(self, position, velocity, acceleration, size, player):
     super().__init__(position, velocity, acceleration, size, glb.RED)
     self.pathfinding = 0
+    self.player = player
 
 
   def update(self):
-    pass
-
+    direction_to_player = (self.player.position - self.position).normalize()
+    self.velocity = direction_to_player * glb.ENEMY_SPEED
+    self.position += self.velocity
 
 
 class Ally(Character):

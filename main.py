@@ -7,6 +7,7 @@ import pygame
 from pygame import Vector2 as vec
 
 import globals as glb
+
 from characters import Ally, Enemy, Player
 from projectiles import FrozenOrb, IceBolt
 
@@ -79,7 +80,7 @@ async def main():
   screen_center = vec(glb.SCREEN.get_size()) / 2
 
   player = Player(screen_center, (0, 0), (0, 0), (50, 50))
-  enemy = Enemy((200, 200), (0, 0), (0, 0), (50, 50))
+  enemy = Enemy((200, 200), (0, 0), (0, 0), (50, 50), player)
 
   collidables = [player, enemy]
   

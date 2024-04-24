@@ -46,6 +46,9 @@ PLAYER_FULLSTOP_THRESHOLD = 0.1
 PLAYER_ACCELERATION = 3
 PROJECTILE_SPEED = 20
 
+# Other globals
+ENEMY_SPEED = 5
+
 
 def load_image(name):
   """Function for loading images from the 'resources' folder"""
