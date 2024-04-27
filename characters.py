@@ -6,13 +6,27 @@ from collidables import Collidable
 
 
 class Character(Collidable):
-  pass
+  def __init__(self, position, velocity,
+               acceleration, size, color, health):
+    super().__init__(position, velocity, acceleration, size, color)
+    self.health = health
+    self.dead = False
+
+  @property
+  def health(self):
+    return self._health
+
+  @health.setter
+  def health(self, value):
+    self._health = value
+    if self._health <= 0:
+      self.dead = True
 
 
 class Player(Character):
 
   def __init__(self, position, velocity, acceleration, size):
-    super().__init__(position, velocity, acceleration, size, glb.GREEN)
+    super().__init__(position, velocity, acceleration, size, glb.GREEN, 100)
     self.movement = {'left': False, 'right': False, 'up': False, 'down': False}
 
   def update(self):
@@ -44,16 +58,19 @@ class Player(Character):
 
 class Enemy(Character):
 
-  def __init__(self, position, velocity, acceleration, size, player):
-    super().__init__(position, velocity, acceleration, size, glb.RED)
+  def __init__(self, position, velocity,
+               acceleration, size, player, moving=True):
+    super().__init__(position, velocity, acceleration, size, glb.RED, 20)
     self.pathfinding = 0
     self.player = player
+    self.moving = moving
 
 
   def update(self):
-    direction_to_player = (self.player.position - self.position).normalize()
-    self.velocity = direction_to_player * glb.ENEMY_SPEED
-    self.position += self.velocity
+    if self.moving:
+      direction_to_player = (self.player.position - self.position).normalize()
+      self.velocity = direction_to_player * glb.ENEMY_SPEED #scaletolength?
+      self.position += self.velocity
 
 
 class Ally(Character):

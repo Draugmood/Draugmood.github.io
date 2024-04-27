@@ -84,6 +84,4 @@ class Collidable:
     pygame.draw.circle(surface, self._color, self.position, self.size[0] // 2)
 
   def collides_with(self, other: 'Collidable') -> bool:
-    if not isinstance(other, Collidable):
-      return False
-    return self.rect.colliderect(other.rect)
+    return False # TODO: reassess need for this
