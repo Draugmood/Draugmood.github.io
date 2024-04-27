@@ -18,11 +18,21 @@ def aim(position):
   mouse_pos = vec(pygame.mouse.get_pos())
   return (mouse_pos - position).normalize()
 
-def handle_collisions(all_collidables, projectiles):
+
+def handle_collisions(player, all_collidables, projectiles):
   for projectile in projectiles:
     for collidable in all_collidables:
+      if collidable == projectile.owner:
+        continue
       if projectile.rect.colliderect(collidable.rect):
-        print("COLLISIONS")
+        collidable.health -= projectile.damage
+
+  for enemy in all_collidables:
+    if player == enemy:
+      continue
+    if player.rect.colliderect(enemy.rect):
+      player.health -= 2
+
 
 def handle_events(player, projectile_list):
 
@@ -61,20 +71,19 @@ def handle_events(player, projectile_list):
       case pygame.MOUSEBUTTONDOWN:
         match event.button:
           case 1:
-            ice_bolt = IceBolt(player.position,
+            ice_bolt = IceBolt(player,
+                               player.position,
                                aim(player.position)*glb.PROJECTILE_SPEED,
                                (0, 0),
-                               (5, 5),
-                               2)
+                               (5, 5))
             projectile_list.append(ice_bolt)
             
           case 3:
-            frozen_orb = FrozenOrb(player.position,
+            frozen_orb = FrozenOrb(player,
+                                   player.position,
                                    aim(player.position)*glb.PROJECTILE_SPEED,
                                    (0, 0),
-                                   (20, 20),
-                                   10)
-
+                                   (20, 20))
             projectile_list.append(frozen_orb)
 
 def get_enemy_position_around_player(player_position, distance):
@@ -98,10 +107,12 @@ async def main():
   screen_center = vec(glb.SCREEN.get_size()) / 2
 
   player = Player(screen_center, (0, 0), (0, 0), (50, 50))
-  enemy = Enemy((200, 200), (0, 0), (0, 0), (50, 50), player, False)
+  enemy = Enemy((200, 200), (0, 0), (0, 0), (50, 50), player)
 
   collidables = [player, enemy]
   projectiles = []
+
+  num_kills = 0
   
   running = True
 
@@ -111,7 +122,8 @@ async def main():
     handle_events(player, projectiles)
 
     glb.SCREEN.blit(background,(0, 0))
-    pygame.draw.circle(glb.SCREEN, glb.GREEN, player.position, 200, width=1)
+    pygame.draw.circle(glb.SCREEN, glb.GREEN,
+                       player.position, glb.ENEMY_SPAWN_RANGE, width=1)
     # just drew this circle, enemies are spawning around player at this rad
 
     for projectile in projectiles:
@@ -122,16 +134,16 @@ async def main():
       collidable.update()
       collidable.draw(glb.SCREEN)
 
-    handle_collisions(collidables, projectiles)
-    # deal damages and death? maybe inside the func
+    handle_collisions(player, collidables, projectiles)
 
     collidables = [collidable for collidable in collidables 
                    if not (hasattr(collidable, 'dead') and collidable.dead)]
 
     if len(collidables) < 2:
-      print("oboi")
-      new_enemy_pos = get_enemy_position_around_player(player.position, 200)
-      enemy = Enemy(new_enemy_pos, (0, 0), (0, 0), (50, 50), player, False)
+      num_kills += 1
+      new_enemy_pos = get_enemy_position_around_player(player.position,
+                                                       glb.ENEMY_SPAWN_RANGE)
+      enemy = Enemy(new_enemy_pos, (0, 0), (0, 0), (50, 50), player)
       collidables.append(enemy)
 
     texts = [
@@ -146,6 +158,9 @@ async def main():
     for i, text in enumerate(texts):
       glb.print_text(text, glb.WHITE, glb.NORMAL_FONT, glb.SCREEN,
                  (glb.SCREEN_RECT.width - 10, 10 + i * 30), "topright")
+      
+    glb.print_text(f"Kills: {num_kills}", glb.WHITE, glb.NORMAL_FONT,
+                   glb.SCREEN, (10, 10), "topleft")
 
     pygame.display.flip()
     await asyncio.sleep(0)

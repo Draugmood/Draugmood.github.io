@@ -9,6 +9,7 @@ class Character(Collidable):
   def __init__(self, position, velocity,
                acceleration, size, color, health):
     super().__init__(position, velocity, acceleration, size, color)
+    self.max_health = health
     self.health = health
     self.dead = False
 
@@ -22,11 +23,17 @@ class Character(Collidable):
     if self._health <= 0:
       self.dead = True
 
+  def draw(self, surface):
+    pygame.draw.circle(surface, self._color, self.position,
+                       self.size[0] // 2, width=1)
+    pygame.draw.circle(surface, self._color, self.position,
+                       (self.size[0] // 2)*(self.health/self.max_health))
+
 
 class Player(Character):
 
   def __init__(self, position, velocity, acceleration, size):
-    super().__init__(position, velocity, acceleration, size, glb.GREEN, 100)
+    super().__init__(position, velocity, acceleration, size, glb.GREEN, glb.PLAYER_HEALTH)
     self.movement = {'left': False, 'right': False, 'up': False, 'down': False}
 
   def update(self):

@@ -20,10 +20,13 @@ GREEN = pg.Color(0, 128, 0)
 def print_text(text, color, text_font, surface, pos, align="center"):
   rendered_text = text_font.render(text, True, color)
   text_rect = rendered_text.get_rect(center=pos)
-  if align == "center":
-    text_rect.center = pos
-  elif align == "topright":
-    text_rect.topright = pos
+  match align:
+    case "center":
+      text_rect.center = pos
+    case "topright":
+      text_rect.topright = pos
+    case "topleft":
+      text_rect.topleft = pos
   surface.blit(rendered_text, text_rect)
 
 
@@ -37,17 +40,20 @@ MENU_BUTTON_FONT = pg.font.Font(None, 50)
 CLOCK = pg.time.Clock()
 INFO_OBJ = pg.display.Info()
 SCREEN_RECT = pg.Rect(0, 0, INFO_OBJ.current_w, INFO_OBJ.current_h)
-SCREEN = pg.display.set_mode((0, 0), pg.FULLSCREEN)
+SCREEN = pg.display.set_mode((0, 0))
 FRICTION_COEFFICIENT = 0.7  #lower number = more friction
 
 # Player
 MAX_PLAYER_SPEED = 12
 PLAYER_FULLSTOP_THRESHOLD = 0.1
 PLAYER_ACCELERATION = 3
-PROJECTILE_SPEED = 20
+PLAYER_HEALTH = 100
 
 # Other globals
 ENEMY_SPEED = 5
+ENEMY_HEALTH = 20
+PROJECTILE_SPEED = 20
+ENEMY_SPAWN_RANGE = 300
 
 
 def load_image(name):
