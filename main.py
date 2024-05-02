@@ -84,7 +84,8 @@ def handle_events(player, projectile_list):
                                    aim(player.position)*glb.PROJECTILE_SPEED,
                                    (0, 0),
                                    (20, 20))
-            projectile_list.append(frozen_orb)
+            if frozen_orb is not None:
+              projectile_list.append(frozen_orb)
 
 def get_enemy_position_around_player(player_position, distance):
   # Generate a random angle in radians
