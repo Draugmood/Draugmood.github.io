@@ -84,7 +84,7 @@ def handle_events(player, projectile_list):
                                    aim(player.position)*glb.PROJECTILE_SPEED,
                                    (0, 0),
                                    (20, 20))
-            if frozen_orb is not None:
+            if frozen_orb.viable:
               projectile_list.append(frozen_orb)
 
 def get_enemy_position_around_player(player_position, distance):
