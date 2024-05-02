@@ -108,9 +108,11 @@ async def main():
   screen_center = vec(glb.SCREEN.get_size()) / 2
 
   player = Player(screen_center, (0, 0), (0, 0), (50, 50))
-  enemy = Enemy((200, 200), (0, 0), (0, 0), (50, 50), player)
+  enemy1 = Enemy((200, 200), (0, 0), (0, 0), (50, 50), player)
+  enemy2 = Enemy((200, 400), (0, 0), (0, 0), (50, 50), player)
+  enemy3 = Enemy((200, 600), (0, 0), (0, 0), (50, 50), player)
 
-  collidables = [player, enemy]
+  collidables = [player, enemy1, enemy2, enemy3]
   projectiles = []
 
   num_kills = 0
@@ -137,11 +139,20 @@ async def main():
 
     handle_collisions(player, collidables, projectiles)
 
+    """ test code for projectiles
+    projectiles.append(FrozenOrb(player,
+       player.position,
+       player.position.normalize()*glb.PROJECTILE_SPEED,
+       (0, 0),
+       (20, 20)))
+
+    print(f"Projectiles: {len(projectiles)}")
+    print(projectiles[len(projectiles)-1].viable)"""
 
     collidables = [collidable for collidable in collidables 
                    if not (hasattr(collidable, 'dead') and collidable.dead)]
 
-    if len(collidables) < 2:
+    if len(collidables) < 4:
       num_kills += 1
       new_enemy_pos = get_enemy_position_around_player(player.position,
                                                        glb.ENEMY_SPAWN_RANGE)
