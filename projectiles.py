@@ -21,9 +21,10 @@ class FrozenOrb(Projectile):
     current_time = time.time()
     if (owner in FrozenOrb.last_cast_time
         and current_time < FrozenOrb.last_cast_time[owner] + FrozenOrb.cooldown):
-      print("Frozen Orb on cooldown")
-      return None
-    FrozenOrb.last_cast_time[owner] = current_time
+      self.viable = False
+    else:
+      self.viable = True
+      FrozenOrb.last_cast_time[owner] = current_time
     self.color = glb.BLUE
     self.damage = 4
     super().__init__(owner, position, velocity,

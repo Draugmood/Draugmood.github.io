@@ -137,6 +137,7 @@ async def main():
 
     handle_collisions(player, collidables, projectiles)
 
+
     collidables = [collidable for collidable in collidables 
                    if not (hasattr(collidable, 'dead') and collidable.dead)]
 
