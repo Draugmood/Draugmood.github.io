@@ -75,7 +75,9 @@ class Enemy(Character):
 
   def update(self):
     if self.moving:
-      direction_to_player = (self.player.position - self.position).normalize()
+      direction_to_player = (self.player.position - self.position)
+      if direction_to_player.length() > 0:
+        direction_to_player = direction_to_player.normalize()
       self.velocity = direction_to_player * glb.ENEMY_SPEED #scaletolength?
       self.position += self.velocity
 

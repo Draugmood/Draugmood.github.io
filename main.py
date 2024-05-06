@@ -73,7 +73,7 @@ def handle_events(player, projectile_list):
           case 1:
             ice_bolt = IceBolt(player,
                                player.position,
-                               aim(player.position)*glb.PROJECTILE_SPEED,
+                               aim(player.position)*glb.ICEBOLT_SPEED,
                                (0, 0),
                                (5, 5))
             projectile_list.append(ice_bolt)
@@ -81,7 +81,7 @@ def handle_events(player, projectile_list):
           case 3:
             frozen_orb = FrozenOrb(player,
                                    player.position,
-                                   aim(player.position)*glb.PROJECTILE_SPEED,
+                                   aim(player.position)*glb.FROZENORB_SPEED,
                                    (0, 0),
                                    (20, 20))
             if frozen_orb.viable:
@@ -108,9 +108,9 @@ async def main():
   screen_center = vec(glb.SCREEN.get_size()) / 2
 
   player = Player(screen_center, (0, 0), (0, 0), (50, 50))
-  enemy1 = Enemy((200, 200), (0, 0), (0, 0), (50, 50), player)
-  enemy2 = Enemy((200, 400), (0, 0), (0, 0), (50, 50), player)
-  enemy3 = Enemy((200, 600), (0, 0), (0, 0), (50, 50), player)
+  enemy1 = Enemy((200, 200), (0, 0), (0, 0), (50, 50), player, moving=False)
+  enemy2 = Enemy((200, 400), (0, 0), (0, 0), (50, 50), player, moving=False)
+  enemy3 = Enemy((200, 600), (0, 0), (0, 0), (50, 50), player, moving=False)
 
   collidables = [player, enemy1, enemy2, enemy3]
   projectiles = []
@@ -132,6 +132,10 @@ async def main():
     for projectile in projectiles:
       projectile.update()
       projectile.draw(glb.SCREEN)
+      if hasattr(projectile, 'bolt_direction'):
+        ice_bolt = projectile.spawn_bolts()
+        if ice_bolt is not None:
+          projectiles.append(ice_bolt)
 
     for collidable in collidables:
       collidable.update()
