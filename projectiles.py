@@ -34,7 +34,7 @@ class FrozenOrb(Projectile):
 
   def spawn_bolts(self):
     if handle_cooldown(self, FrozenOrb.last_bolt_spawn, glb.FORZENORB_BOLT_SPAWN_CD):
-      return IceBolt(self.owner, self.position, self.bolt_direction * IceBolt.speed, (0, 0), (5, 5))
+      return IceBolt(self.owner, self.position, self.bolt_direction, (0, 0), (5, 5))
     return None
 
 
