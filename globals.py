@@ -40,7 +40,7 @@ MENU_BUTTON_FONT = pg.font.Font(None, 50)
 CLOCK = pg.time.Clock()
 INFO_OBJ = pg.display.Info()
 SCREEN_RECT = pg.Rect(0, 0, INFO_OBJ.current_w, INFO_OBJ.current_h)
-SCREEN = pg.display.set_mode((0, 0))
+SCREEN = pg.display.set_mode((0, 0), pg.FULLSCREEN)
 FRICTION_COEFFICIENT = 0.7  #lower number = more friction
 
 # Player
