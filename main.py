@@ -73,7 +73,7 @@ def handle_events(player, projectile_list):
           case 1:
             ice_bolt = IceBolt(player,
                                player.position,
-                               aim(player.position)*glb.ICEBOLT_SPEED,
+                               aim(player.position),
                                (0, 0),
                                (5, 5))
             projectile_list.append(ice_bolt)

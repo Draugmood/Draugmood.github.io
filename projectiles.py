@@ -34,16 +34,17 @@ class FrozenOrb(Projectile):
 
   def spawn_bolts(self):
     if handle_cooldown(self, FrozenOrb.last_bolt_spawn, glb.FORZENORB_BOLT_SPAWN_CD):
-      return IceBolt(self.owner, self.position, self.bolt_direction * glb.ICEBOLT_SPEED, (0, 0), (5, 5))
+      return IceBolt(self.owner, self.position, self.bolt_direction * IceBolt.speed, (0, 0), (5, 5))
     return None
 
 
 class IceBolt(Projectile):
-
-  def __init__(self, owner, position, velocity, acceleration, size):
+  speed = 10
+  
+  def __init__(self, owner, position, direction, acceleration, size):
     self.color = glb.LIGHT_BLUE
     self.damage = 2
-    super().__init__(owner, position, velocity,
+    super().__init__(owner, position, direction * IceBolt.speed,
                      acceleration, size, self.damage, self.color)
 
 
