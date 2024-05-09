@@ -81,7 +81,7 @@ def handle_events(player, projectile_list):
           case 3:
             frozen_orb = FrozenOrb(player,
                                    player.position,
-                                   aim(player.position)*glb.FROZENORB_SPEED,
+                                   aim(player.position),
                                    (0, 0),
                                    (20, 20))
             if frozen_orb.viable:

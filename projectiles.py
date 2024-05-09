@@ -14,15 +14,17 @@ class Projectile(Collidable):
 
 
 class FrozenOrb(Projectile):
+  speed = 5
+  cooldown = 2
   last_cast_time = {}
-  cooldown = 3
+  spawn_cd = 0.1
   last_bolt_spawn = {}
   
-  def __init__(self, owner, position, velocity, acceleration, size):
+  def __init__(self, owner, position, direction, acceleration, size):
     self.viable = handle_cooldown(owner, FrozenOrb.last_cast_time, FrozenOrb.cooldown)
     self.color = glb.BLUE
     self.damage = 4
-    super().__init__(owner, position, velocity,
+    super().__init__(owner, position, direction * FrozenOrb.speed,
                      acceleration, size, self.damage, self.color)
     if self.velocity.length() > 0:
       self.bolt_direction = self.velocity.normalize().rotate(20)
@@ -33,7 +35,7 @@ class FrozenOrb(Projectile):
       self.bolt_direction.rotate_ip(glb.SPAWNSPINNER_ROTATION)
 
   def spawn_bolts(self):
-    if handle_cooldown(self, FrozenOrb.last_bolt_spawn, glb.FORZENORB_BOLT_SPAWN_CD):
+    if handle_cooldown(self, FrozenOrb.last_bolt_spawn, FrozenOrb.spawn_cd):
       return IceBolt(self.owner, self.position, self.bolt_direction, (0, 0), (5, 5))
     return None
 

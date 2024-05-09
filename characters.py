@@ -31,9 +31,13 @@ class Character(Collidable):
 
 
 class Player(Character):
+  max_speed = 12
+  accel_magnitude = 3
+  max_health = 100
 
   def __init__(self, position, velocity, acceleration, size):
-    super().__init__(position, velocity, acceleration, size, glb.GREEN, glb.PLAYER_HEALTH)
+    super().__init__(position, velocity, acceleration,
+                     size, glb.GREEN, Player.max_health)
     self.movement = {'left': False, 'right': False, 'up': False, 'down': False}
 
   def update(self):
@@ -48,14 +52,14 @@ class Player(Character):
       acceleration_val.y += 1
 
     if acceleration_val.length() > 0:
-      acceleration_val = acceleration_val.normalize() * glb.PLAYER_ACCELERATION
+      acceleration_val = acceleration_val.normalize() * Player.accel_magnitude
 
     self.acceleration = acceleration_val
 
     # HANDLE VELOCITY NOT SKYROCKETING / VELOCITY CEILING
     self.velocity += self.acceleration
-    if self.velocity.length() > glb.MAX_PLAYER_SPEED:
-      self.velocity.scale_to_length(glb.MAX_PLAYER_SPEED)
+    if self.velocity.length() > Player.max_speed:
+      self.velocity.scale_to_length(Player.max_speed)
     self.position += self.velocity
 
   def draw(self, surface):
@@ -64,10 +68,13 @@ class Player(Character):
 
 
 class Enemy(Character):
+  speed = 5
+  max_health = 20
 
   def __init__(self, position, velocity,
                acceleration, size, player, moving=True):
-    super().__init__(position, velocity, acceleration, size, glb.RED, 20)
+    super().__init__(position, velocity, acceleration,
+                     size, glb.RED, Enemy.max_health)
     self.pathfinding = 0
     self.player = player
     self.moving = moving
@@ -78,7 +85,7 @@ class Enemy(Character):
       direction_to_player = (self.player.position - self.position)
       if direction_to_player.length() > 0:
         direction_to_player = direction_to_player.normalize()
-      self.velocity = direction_to_player * glb.ENEMY_SPEED #scaletolength?
+      self.velocity = direction_to_player * Enemy.speed #scaletolength?
       self.position += self.velocity
 
 
