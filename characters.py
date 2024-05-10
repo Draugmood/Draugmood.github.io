@@ -28,6 +28,8 @@ class Character(Collidable):
                        self.size[0] // 2, width=1)
     pygame.draw.circle(surface, self._color, self.position,
                        (self.size[0] // 2)*(self.health/self.max_health))
+    glb.print_text(f"{self.health}", glb.WHITE, glb.NORMAL_FONT,
+                   surface, self.rect.center, "center")
 
 
 class Player(Character):

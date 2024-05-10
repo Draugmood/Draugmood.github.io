@@ -25,7 +25,7 @@ def handle_collisions(player, all_collidables, projectiles):
       if collidable == projectile.owner:
         continue
       if projectile.rect.colliderect(collidable.rect):
-        collidable.health -= projectile.damage
+        projectile.hit(collidable)
 
   for enemy in all_collidables:
     if player == enemy:
@@ -136,6 +136,8 @@ async def main():
         ice_bolt = projectile.spawn_bolts()
         if ice_bolt is not None:
           projectiles.append(ice_bolt)
+        if projectile.dead:
+          projectile.explode(projectiles)
 
     for collidable in collidables:
       collidable.update()
@@ -156,6 +158,9 @@ async def main():
     collidables = [collidable for collidable in collidables 
                    if not (hasattr(collidable, 'dead') and collidable.dead)]
 
+    projectiles = [projectile for projectile in projectiles
+                   if not projectile.dead]
+
     if len(collidables) < 4:
       num_kills += 1
       new_enemy_pos = get_enemy_position_around_player(player.position,
@@ -169,7 +174,8 @@ async def main():
         f"Velocity: {player.velocity}",
         f"X Movement: {'Left' if player.movement['left'] else 'Right' if player.movement['right'] else 'None'}",
         f"Y Movement: {'Up' if player.movement['up'] else 'Down' if player.movement['down'] else 'None'}",
-        f"Rect: {player.rect}"
+        f"Rect: {player.rect}",
+        f"Projectiles: {len(projectiles)}"
     ]
 
     for i, text in enumerate(texts):
