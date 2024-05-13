@@ -28,7 +28,7 @@ class Character(Collidable):
       self.dead = True
 
   def update(self):
-    self.move()
+    super().update()
     if time.time() > self.cold_expires:
       self._cold_coefficient = 0
 
@@ -52,13 +52,8 @@ class Character(Collidable):
                        self.size[0] // 2, width=1)
     pygame.draw.circle(surface, color, self.position,
                        (self.size[0] // 2)*(self.health/self.max_health))
-    glb.print_text(f"{self._cold_coefficient}", glb.WHITE, glb.NORMAL_FONT,
+    glb.print_text(f"{self.health}", glb.WHITE, glb.NORMAL_FONT,
                    surface, self.rect.center, "center")
-    glb.print_text(f"{self._velocity}", glb.WHITE, glb.NORMAL_FONT,
-       surface, (self.rect.centerx, self.rect.centery+10), "center")
-    glb.print_text(f"{self.velocity * (1 - self._cold_coefficient)}", glb.WHITE, glb.NORMAL_FONT,
-       surface, (self.rect.centerx, self.rect.centery+20), "center")
-    # IT SEEMS ALL VALUES ARE CORRECT, BUT NOT CORRECT APPLICATION TO POSITION???
 
 
 class Player(Character):
