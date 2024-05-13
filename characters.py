@@ -1,3 +1,5 @@
+import time
+
 import pygame
 from pygame import Vector2 as vec
 
@@ -10,8 +12,10 @@ class Character(Collidable):
                acceleration, size, color, health):
     super().__init__(position, velocity, acceleration, size, color)
     self.max_health = health
-    self.health = health
+    self._health = health
     self.dead = False
+    self._cold_coefficient = 0
+    self.cold_expires = 0
 
   @property
   def health(self):
@@ -23,10 +27,30 @@ class Character(Collidable):
     if self._health <= 0:
       self.dead = True
 
+  def update(self):
+    self.move()
+    if time.time() > self.cold_expires:
+      self._cold_coefficient = 0
+
+  @property
+  def is_cold(self):
+    return self._cold_coefficient != 0
+
+  def apply_cold(self, duration, slow_coefficient):
+    current_time = time.time()
+    if current_time > self.cold_expires or slow_coefficient > self._cold_coefficient:
+      self._cold_coefficient = slow_coefficient
+    self.cold_expires = max(self.cold_expires, current_time + duration)
+
+  def move(self):
+    self.velocity += self.acceleration
+    self.position += self.velocity * (1 - self._cold_coefficient)
+
   def draw(self, surface):
-    pygame.draw.circle(surface, self._color, self.position,
+    color = glb.MAROON if self.is_cold else self._color
+    pygame.draw.circle(surface, color, self.position,
                        self.size[0] // 2, width=1)
-    pygame.draw.circle(surface, self._color, self.position,
+    pygame.draw.circle(surface, color, self.position,
                        (self.size[0] // 2)*(self.health/self.max_health))
     glb.print_text(f"{self.health}", glb.WHITE, glb.NORMAL_FONT,
                    surface, self.rect.center, "center")

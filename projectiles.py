@@ -1,6 +1,7 @@
 import time
 
 import globals as glb
+from characters import Character
 from collidables import Collidable
 
 
@@ -69,6 +70,8 @@ class FrozenOrb(Projectile):
 
 class IceBolt(Projectile):
   speed = 10
+  slow_effect = 0.5
+  slow_duration = 2
   
   def __init__(self, owner, position, direction, acceleration, size):
     self.color = glb.LIGHT_BLUE
@@ -80,7 +83,12 @@ class IceBolt(Projectile):
     
   def hit(self, other: Collidable):
     super().hit(other)
+    if isinstance(other, Character):
+      self.inflict_cold(other)
     self.dead = True
+
+  def inflict_cold(self, other: Character):
+    other.apply_cold(IceBolt.slow_duration, IceBolt.slow_effect)
 
 
 def handle_cooldown(owner, casted_dict, cooldown):
