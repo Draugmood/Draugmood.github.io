@@ -54,6 +54,10 @@ class Character(Collidable):
                        (self.size[0] // 2)*(self.health/self.max_health))
     glb.print_text(f"{self._cold_coefficient}", glb.WHITE, glb.NORMAL_FONT,
                    surface, self.rect.center, "center")
+    glb.print_text(f"{self._velocity}", glb.WHITE, glb.NORMAL_FONT,
+       surface, (self.rect.centerx, self.rect.centery+10), "center")
+    glb.print_text(f"{self.velocity * (1 - self._cold_coefficient)}", glb.WHITE, glb.NORMAL_FONT,
+       surface, (self.rect.centerx, self.rect.centery+20), "center")
 
 
 class Player(Character):
