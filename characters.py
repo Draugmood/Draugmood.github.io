@@ -44,7 +44,7 @@ class Character(Collidable):
 
   def move(self):
     self.velocity += self.acceleration
-    self.position += self.velocity * (1 - self._cold_coefficient)
+    self.position -= self.velocity * (1 - self._cold_coefficient)
 
   def draw(self, surface):
     color = glb.MAROON if self.is_cold else self._color
@@ -58,6 +58,7 @@ class Character(Collidable):
        surface, (self.rect.centerx, self.rect.centery+10), "center")
     glb.print_text(f"{self.velocity * (1 - self._cold_coefficient)}", glb.WHITE, glb.NORMAL_FONT,
        surface, (self.rect.centerx, self.rect.centery+20), "center")
+    # IT SEEMS ALL VALUES ARE CORRECT, BUT NOT CORRECT APPLICATION TO POSITION???
 
 
 class Player(Character):
