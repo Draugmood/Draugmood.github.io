@@ -29,7 +29,7 @@ class Character(Collidable):
 
   def update(self):
     glb.print_text("Character update", glb.WHITE, glb.NORMAL_FONT,
-       glb.SCREEN, (20, 1050), "topleft")
+       glb.SCREEN, (glb.SCREEN_RECT.width - 10, 10 + 590), "topright")
     super().update()
     if time.time() > self.cold_expires:
       self._cold_coefficient = 0
@@ -48,7 +48,7 @@ class Character(Collidable):
 
   def move(self):
     glb.print_text("Character move", glb.WHITE, glb.NORMAL_FONT,
-       glb.SCREEN, (20, 1000), "topleft")
+       glb.SCREEN, (glb.SCREEN_RECT.width - 10, 10 + 560), "topright")
     self.velocity += self.acceleration
     self.position -= self.velocity * (1 - self._cold_coefficient)
 
