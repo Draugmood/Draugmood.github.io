@@ -19,7 +19,7 @@ jobs:
             python -m pip install pygbag
             echo "Successfully installed pygbag"
             echo "Attempting to build the game"
-            python -m pygbag --build $GITHUB_WORKSPACE/main.py
+            python -m pygbag --build $GITHUB_WORKSPACE/main.py --template $GITHUB_WORKSPACE/pygbag/template.tmpl
             echo "Successfully build the game and compiled to WebAssembly"
 
     - name : "Upload to GitHub pages branch gh-pages"
