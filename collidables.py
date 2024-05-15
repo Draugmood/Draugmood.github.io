@@ -77,11 +77,13 @@ class Collidable:
     self._rect = value
 
   def update(self):
-    print(f"Updating {self.__class__.__name__} at {self.position}")
+    glb.print_text("Collidable update", glb.WHITE, glb.NORMAL_FONT,
+       glb.SCREEN, (20, 1150), "topleft")
     self.move()
 
   def move(self):
-    print(f"Moving {self.__class__.__name__} at {self.position}")
+    glb.print_text("Collidable move", glb.WHITE, glb.NORMAL_FONT,
+       glb.SCREEN, (20, 1100), "topleft")
     self.velocity += self.acceleration
     self.position += self.velocity
 
