@@ -71,19 +71,15 @@ class Collidable:
   @property
   def rect(self) -> pygame.Rect:
     return self._rect
-  
+
   @rect.setter
   def rect(self, value: pygame.Rect):
     self._rect = value
 
   def update(self):
-    glb.print_text("Collidable update", glb.WHITE, glb.NORMAL_FONT,
-       glb.SCREEN, (glb.SCREEN_RECT.width - 10, 10 + 500), "topright")
     self.move()
 
   def move(self):
-    glb.print_text("Collidable move", glb.WHITE, glb.NORMAL_FONT,
-       glb.SCREEN, (glb.SCREEN_RECT.width - 10, 10 + 530), "topright")
     self.velocity += self.acceleration
     self.position += self.velocity
 

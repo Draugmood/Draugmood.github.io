@@ -8,8 +8,8 @@ from collidables import Collidable
 
 
 class Character(Collidable):
-  def __init__(self, position, velocity,
-               acceleration, size, color, health):
+
+  def __init__(self, position, velocity, acceleration, size, color, health):
     super().__init__(position, velocity, acceleration, size, color)
     self.max_health = health
     self._health = health
@@ -28,8 +28,6 @@ class Character(Collidable):
       self.dead = True
 
   def update(self):
-    glb.print_text("Character update", glb.WHITE, glb.NORMAL_FONT,
-       glb.SCREEN, (glb.SCREEN_RECT.width - 10, 10 + 590), "topright")
     super().update()
     if time.time() > self.cold_expires:
       self._cold_coefficient = 0
@@ -47,19 +45,20 @@ class Character(Collidable):
     self.cold_expires = max(self.cold_expires, current_time + duration)
 
   def move(self):
-    glb.print_text("Character move", glb.WHITE, glb.NORMAL_FONT,
-       glb.SCREEN, (glb.SCREEN_RECT.width - 10, 10 + 560), "topright")
     self.velocity += self.acceleration
-    self.position -= self.velocity * (1 - self._cold_coefficient)
+    self.position += self.velocity * (1 - self._cold_coefficient)
 
   def draw(self, surface):
     color = glb.MAROON if self.is_cold else self._color
+    pygame.draw.circle(surface,
+                       color,
+                       self.position,
+                       self.size[0] // 2,
+                       width=1)
     pygame.draw.circle(surface, color, self.position,
-                       self.size[0] // 2, width=1)
-    pygame.draw.circle(surface, color, self.position,
-                       (self.size[0] // 2)*(self.health/self.max_health))
-    glb.print_text(f"{self.health}", glb.WHITE, glb.NORMAL_FONT,
-                   surface, self.rect.center, "center")
+                       (self.size[0] // 2) * (self.health / self.max_health))
+    glb.print_text(f"{self.health}", glb.WHITE, glb.NORMAL_FONT, surface,
+                   self.rect.center, "center")
 
 
 class Player(Character):
@@ -68,8 +67,8 @@ class Player(Character):
   max_health = 100
 
   def __init__(self, position, velocity, acceleration, size):
-    super().__init__(position, velocity, acceleration,
-                     size, glb.GREEN, Player.max_health)
+    super().__init__(position, velocity, acceleration, size, glb.GREEN,
+                     Player.max_health)
     self.movement = {'left': False, 'right': False, 'up': False, 'down': False}
 
   def update(self):
@@ -103,22 +102,26 @@ class Enemy(Character):
   speed = 5
   max_health = 20
 
-  def __init__(self, position, velocity,
-               acceleration, size, player, moving=True):
-    super().__init__(position, velocity, acceleration,
-                     size, glb.RED, Enemy.max_health)
+  def __init__(self,
+               position,
+               velocity,
+               acceleration,
+               size,
+               player,
+               moving=True):
+    super().__init__(position, velocity, acceleration, size, glb.RED,
+                     Enemy.max_health)
     self.pathfinding = 0
     self.player = player
     self.moving = moving
-
 
   def update(self):
     if self.moving:
       direction_to_player = (self.player.position - self.position)
       if direction_to_player.length() > 0:
         direction_to_player = direction_to_player.normalize()
-      self.velocity = direction_to_player * Enemy.speed #scaletolength?
-      self.position += self.velocity
+      self.velocity = direction_to_player * Enemy.speed  #scaletolength?
+      super().update()
 
 
 class Ally(Character):
