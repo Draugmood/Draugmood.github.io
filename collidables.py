@@ -77,9 +77,11 @@ class Collidable:
     self._rect = value
 
   def update(self):
+    print(f"Updating {self.__class__.__name__} at {self.position}")
     self.move()
 
   def move(self):
+    print(f"Moving {self.__class__.__name__} at {self.position}")
     self.velocity += self.acceleration
     self.position += self.velocity
 
