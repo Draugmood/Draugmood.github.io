@@ -31,6 +31,8 @@ class Character(Collidable):
     super().update()
     if time.time() > self.cold_expires:
       self._cold_coefficient = 0
+      # COLD STILL DONT WORK BRO
+      # SEE RECENT ANSWER FROM GPT
 
   @property
   def is_cold(self):
