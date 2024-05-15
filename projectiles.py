@@ -71,7 +71,7 @@ class FrozenOrb(Projectile):
 class IceBolt(Projectile):
   speed = 10
   slow_effect = 0.5
-  slow_duration = 2
+  slow_duration = 1
   
   def __init__(self, owner, position, direction, acceleration, size):
     self.color = glb.LIGHT_BLUE
