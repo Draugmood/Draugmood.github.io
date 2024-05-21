@@ -26,8 +26,6 @@ class Projectile(Collidable):
 
   def draw(self, surface):
     super().draw(surface)
-    glb.print_text(f"{self.damage}", glb.WHITE, glb.NORMAL_FONT,
-                   surface, self.rect.center, "center")
 
 
 class FrozenOrb(Projectile):
