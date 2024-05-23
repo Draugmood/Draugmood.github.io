@@ -41,7 +41,7 @@ class Grenade(Projectile):
     self.angle = math.atan2(target.y - position.y, target.x - position.x)
     self.direction = vec(1,0).rotate_rad(self.angle)
     self.speed_decay = 0
-    self.gravity = 5
+    self.gravity = 1
 
     self.travel_distance = position.distance_to(target)
     self.travel_time = self.travel_distance / Grenade.speed
@@ -53,9 +53,6 @@ class Grenade(Projectile):
     super().__init__(owner, position, velocity, acceleration,
                      size, self.damage, self.color)
 
-  def update(self):
-    super().update()
-    
 
 
 class FrozenOrb(Projectile):
