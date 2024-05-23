@@ -11,7 +11,7 @@ from pygame import Vector2 as vec
 import globals as glb
 
 from characters import Ally, Enemy, Player
-from projectiles import FrozenOrb, IceBolt
+from projectiles import FrozenOrb, IceBolt, Grenade
 
 
 def aim(position):
@@ -38,11 +38,11 @@ def handle_events(player, projectile_list):
 
   for event in pygame.event.get():
     match event.type:
-    
+
       case pygame.QUIT:
         pygame.quit()
         sys.exit()
-        
+
       case pygame.KEYDOWN:
         match event.key:
           case pygame.K_ESCAPE:
@@ -56,7 +56,12 @@ def handle_events(player, projectile_list):
             player.movement['up'] = True
           case pygame.K_s:
             player.movement['down'] = True
-          
+          case pygame.K_SPACE:
+            grenade = Grenade(player, player.position,
+                              vec(pygame.mouse.get_pos()), vec(0, 0), 3)
+            projectile_list.append(grenade)
+
+
       case pygame.KEYUP:
         match event.key:
           case pygame.K_a:
@@ -71,21 +76,16 @@ def handle_events(player, projectile_list):
       case pygame.MOUSEBUTTONDOWN:
         match event.button:
           case 1:
-            ice_bolt = IceBolt(player,
-                               player.position,
-                               aim(player.position),
-                               (0, 0),
-                               (5, 5))
+            ice_bolt = IceBolt(player, player.position, aim(player.position),
+                               (0, 0), (5, 5))
             projectile_list.append(ice_bolt)
-            
+
           case 3:
-            frozen_orb = FrozenOrb(player,
-                                   player.position,
-                                   aim(player.position),
-                                   (0, 0),
-                                   (20, 20))
+            frozen_orb = FrozenOrb(player, player.position,
+                                   aim(player.position), (0, 0), (20, 20))
             if frozen_orb.viable:
               projectile_list.append(frozen_orb)
+
 
 def get_enemy_position_around_player(player_position, distance):
   # Generate a random angle in radians
@@ -99,6 +99,7 @@ def get_enemy_position_around_player(player_position, distance):
   enemy_position = player_position + pygame.Vector2(dx, dy)
 
   return enemy_position
+
 
 async def main():
 
@@ -116,7 +117,7 @@ async def main():
   projectiles = []
 
   num_kills = 0
-  
+
   running = True
 
   while running:
@@ -124,9 +125,12 @@ async def main():
 
     handle_events(player, projectiles)
 
-    glb.SCREEN.blit(background,(0, 0))
-    pygame.draw.circle(glb.SCREEN, glb.GREEN,
-                       player.position, glb.ENEMY_SPAWN_RANGE, width=1)
+    glb.SCREEN.blit(background, (0, 0))
+    pygame.draw.circle(glb.SCREEN,
+                       glb.GREEN,
+                       player.position,
+                       glb.ENEMY_SPAWN_RANGE,
+                       width=1)
     # just drew this circle, enemies are spawning around player at this rad
 
     for projectile in projectiles:
@@ -144,7 +148,6 @@ async def main():
       collidable.draw(glb.SCREEN)
 
     handle_collisions(player, collidables, projectiles)
-
     """ test code for projectiles
     projectiles.append(FrozenOrb(player,
        player.position,
@@ -155,11 +158,14 @@ async def main():
     print(f"Projectiles: {len(projectiles)}")
     print(projectiles[len(projectiles)-1].viable)"""
 
-    collidables = [collidable for collidable in collidables 
-                   if not (hasattr(collidable, 'dead') and collidable.dead)]
+    collidables = [
+        collidable for collidable in collidables
+        if not (hasattr(collidable, 'dead') and collidable.dead)
+    ]
 
-    projectiles = [projectile for projectile in projectiles
-                   if not projectile.dead]
+    projectiles = [
+        projectile for projectile in projectiles if not projectile.dead
+    ]
 
     if len(collidables) < 4:
       num_kills += 1
@@ -169,24 +175,23 @@ async def main():
       collidables.append(enemy)
 
     texts = [
-        f"Position: {player.position}",
-        f"Acceleration: {player.acceleration}",
+        f"Position: {player.position}", f"Acceleration: {player.acceleration}",
         f"Velocity: {player.velocity}",
         f"X Movement: {'Left' if player.movement['left'] else 'Right' if player.movement['right'] else 'None'}",
         f"Y Movement: {'Up' if player.movement['up'] else 'Down' if player.movement['down'] else 'None'}",
-        f"Rect: {player.rect}",
-        f"Projectiles: {len(projectiles)}"
+        f"Rect: {player.rect}", f"Projectiles: {len(projectiles)}"
     ]
 
     for i, text in enumerate(texts):
       glb.print_text(text, glb.WHITE, glb.NORMAL_FONT, glb.SCREEN,
-                 (glb.SCREEN_RECT.width - 10, 10 + i * 30), "topright")
-      
+                     (glb.SCREEN_RECT.width - 10, 10 + i * 30), "topright")
+
     glb.print_text(f"Kills: {num_kills}", glb.WHITE, glb.NORMAL_FONT,
                    glb.SCREEN, (10, 10), "topleft")
 
     pygame.display.flip()
     await asyncio.sleep(0)
+
 
 if __name__ == "__main__":
   asyncio.run(main())
