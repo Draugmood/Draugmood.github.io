@@ -58,7 +58,7 @@ def handle_events(player, projectile_list):
             player.movement['down'] = True
           case pygame.K_SPACE:
             grenade = Grenade(player, player.position,
-                              vec(pygame.mouse.get_pos()), (0, 0), (3, 3))
+                              vec(pygame.mouse.get_pos()), (0, 0), (10, 10))
             projectile_list.append(grenade)
 
 
