@@ -43,16 +43,19 @@ class Grenade(Projectile):
     self.speed_decay = 0
     self.gravity = 5
 
-    distance = position.distance_to(target)
-    travel_time = distance / Grenade.speed
+    self.travel_distance = position.distance_to(target)
+    self.travel_time = self.travel_distance / Grenade.speed
 
-    self.v_speed = travel_time * self.gravity / 2
+    self.v_speed = self.travel_time * self.gravity / 2
     velocity = self.direction * Grenade.speed
     velocity.y += self.v_speed
 
-    # input velocity for new movement tech
-    super().__init__(owner, position, self.direction * Grenade.speed, acceleration,
+    super().__init__(owner, position, velocity, acceleration,
                      size, self.damage, self.color)
+
+  def update(self):
+    super().update()
+    
 
 
 class FrozenOrb(Projectile):
