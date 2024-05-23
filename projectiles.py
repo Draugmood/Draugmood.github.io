@@ -48,7 +48,7 @@ class Grenade(Projectile):
 
     self.v_speed = self.travel_time * self.gravity / 2
     velocity = self.direction * Grenade.speed
-    velocity.y += self.v_speed
+    velocity.y -= self.v_speed
 
     super().__init__(owner, position, velocity, acceleration, size,
                      self.damage, self.color)
