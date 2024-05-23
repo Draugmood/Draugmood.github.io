@@ -41,7 +41,7 @@ class Grenade(Projectile):
     self.angle = math.atan2(target.y - position.y, target.x - position.x)
     self.direction = vec(1, 0).rotate_rad(self.angle)
     self.speed_decay = 0
-    self.gravity = acceleration
+    self.gravity = acceleration[1]
 
     self.travel_distance = position.distance_to(target)
     self.travel_time = self.travel_distance / Grenade.speed
