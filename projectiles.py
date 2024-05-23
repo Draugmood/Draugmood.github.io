@@ -37,13 +37,14 @@ class Grenade(Projectile):
 
   def __init__(self, owner, position, target, acceleration, size):
     self.color = glb.WHITE
+    self.damage = 20
     self.angle = math.atan2(target.y - position.y, target.x - position.x)
     self.direction = vec(0,1).rotate_rad(self.angle)
     self.speed_decay = 0
     self.gravity = 450
 
     super().__init__(owner, position, self.direction * Grenade.speed, acceleration,
-                     size, self.color, self.color)
+                     size, self.damage, self.color)
 
     distance = position.distance_to(target)
     travel_time = distance / self.speed
