@@ -1,6 +1,7 @@
 import math
 import time
 
+import pygame
 from pygame import Vector2 as vec
 
 import globals as glb
@@ -45,13 +46,33 @@ class Grenade(Projectile):
 
     self.travel_distance = position.distance_to(target)
     self.travel_time = self.travel_distance / Grenade.speed
+    initial_v_speed = self.travel_time * self.gravity / 2
+    initial_velocity = self.direction * Grenade.speed
+    initial_velocity.y -= initial_v_speed
+    
+    half_point_time = self.travel_time / 2
+    half_point_dropoff = 0.5 * self.gravity * half_point_time**2
+    self.initial_target = initial_velocity * half_point_time
+    self.trajectory_apex = vec(self.initial_target.x,
+                               self.initial_target.y + half_point_dropoff)
 
     self.v_speed = self.travel_time * self.gravity / 2
-    velocity = self.direction * Grenade.speed
-    velocity.y -= self.v_speed
+    new_angle = math.atan2(self.trajectory_apex.y - position.y,
+                           self.trajectory_apex.x - position.x)
+    new_direction = vec(1, 0).rotate_rad(new_angle)
+    new_travel_distance = position.distance_to(self.trajectory_apex)
+    new_travel_time = new_travel_distance / Grenade.speed
+    new_v_speed = new_travel_time * self.gravity / 2
+    
+    velocity = new_direction * Grenade.speed
+    velocity.y -= new_v_speed
 
     super().__init__(owner, position, velocity, acceleration, size,
                      self.damage, self.color)
+
+  def update(self):
+    super().update()
+    pygame.draw.circle(glb.SCREEN, glb.BLUE, self.trajectory_apex, 5)
 
 
 class FrozenOrb(Projectile):
