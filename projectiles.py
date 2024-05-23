@@ -33,7 +33,7 @@ class Projectile(Collidable):
 
 
 class Grenade(Projectile):
-  speed = 6
+  speed = 10
 
   def __init__(self, owner, position, target, acceleration, size):
     self.color = glb.WHITE
