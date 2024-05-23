@@ -39,9 +39,9 @@ class Grenade(Projectile):
     self.color = glb.WHITE
     self.damage = 20
     self.angle = math.atan2(target.y - position.y, target.x - position.x)
-    self.direction = vec(1,0).rotate_rad(self.angle)
+    self.direction = vec(1, 0).rotate_rad(self.angle)
     self.speed_decay = 0
-    self.gravity = 1
+    self.gravity = acceleration
 
     self.travel_distance = position.distance_to(target)
     self.travel_time = self.travel_distance / Grenade.speed
@@ -50,9 +50,8 @@ class Grenade(Projectile):
     velocity = self.direction * Grenade.speed
     velocity.y += self.v_speed
 
-    super().__init__(owner, position, velocity, acceleration,
-                     size, self.damage, self.color)
-
+    super().__init__(owner, position, velocity, acceleration, size,
+                     self.damage, self.color)
 
 
 class FrozenOrb(Projectile):
