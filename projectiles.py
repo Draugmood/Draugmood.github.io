@@ -56,7 +56,7 @@ class Grenade(Projectile):
     self.velocity += self.acceleration
     self.true_position += self.velocity
     self.position = self.true_position
-    self.position.y = self.true_position.y + scaled_z
+    self.position.y = self.true_position.y - scaled_z
     Projectile.update(self)
 
 
