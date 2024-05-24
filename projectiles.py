@@ -50,7 +50,7 @@ class Grenade(Projectile):
                      self.damage, self.color)
 
   def update(self):
-    self.vz += self.gravity
+    self.vz -= self.gravity
     self.z += self.vz
     scaled_z = self.z * glb.ISOMETRIC_SCALING
     self.velocity += self.acceleration
