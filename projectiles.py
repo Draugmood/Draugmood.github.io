@@ -40,7 +40,7 @@ class Grenade(Projectile):
     self.color = glb.WHITE
     self.damage = 20
     self.speed_decay = 0
-    self.gravity = 0
+    self.gravity = 0.5
     self.true_position = vec(position)
     self.velocity = vec(direction) * self.speed
     self.z = 0
