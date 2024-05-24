@@ -53,10 +53,11 @@ class Grenade(Projectile):
     self.vz += self.gravity
     self.z += self.vz
     scaled_z = self.z * glb.ISOMETRIC_SCALING
+    self.velocity += self.acceleration
+    self.true_position += self.velocity
+    self.position = self.true_position
     self.position.y = self.true_position.y + scaled_z
-    super().update()
-    self.true_position.x = self.position.x
-    self.true_position.y = self.position.y - scaled_z
+    Projectile.update(self)
 
 
 class FrozenOrb(Projectile):
