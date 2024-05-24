@@ -1,5 +1,6 @@
 #!/user/bin/env python3
 """Config file for Mayhem clone"""
+import math
 import os
 
 import pygame as pg
@@ -41,12 +42,15 @@ CLOCK = pg.time.Clock()
 INFO_OBJ = pg.display.Info()
 SCREEN_RECT = pg.Rect(0, 0, INFO_OBJ.current_w, INFO_OBJ.current_h)
 SCREEN = pg.display.set_mode((0, 0), pg.FULLSCREEN)
+ISOMETRIC_VIEWANGLE = math.atan2(4,3)
+ISOMETRIC_SCALING = math.cos(ISOMETRIC_VIEWANGLE)
 FRICTION_COEFFICIENT = 0.7  #lower number = more friction
 FULLSTOP_THRESHOLD = 0.1
 
 # Other globals
 SPAWNSPINNER_ROTATION = 65
 ENEMY_SPAWN_RANGE = 400
+PROJECTION_ANGLE = math.radians(45)
 
 
 def load_image(name):

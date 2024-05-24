@@ -36,43 +36,24 @@ class Projectile(Collidable):
 class Grenade(Projectile):
   speed = 10
 
-  def __init__(self, owner, position, target, acceleration, size):
+  def __init__(self, owner, position, direction, acceleration, size):
     self.color = glb.WHITE
     self.damage = 20
-    self.angle = math.atan2(target.y - position.y, target.x - position.x)
-    self.direction = vec(1, 0).rotate_rad(self.angle)
     self.speed_decay = 0
     self.gravity = acceleration[1]
-
-    self.travel_distance = position.distance_to(target)
-    self.travel_time = self.travel_distance / Grenade.speed
-    initial_v_speed = self.travel_time * self.gravity / 2
-    initial_velocity = self.direction * Grenade.speed
-    initial_velocity.y -= initial_v_speed
+    self.velocity = vec(direction) * self.speed
+    self.z = 0
+    self.vz = self.velocity.length() * math.tan(glb.PROJECTION_ANGLE)
     
-    half_point_time = self.travel_time / 2
-    half_point_dropoff = 0.5 * self.gravity * half_point_time**2
-    self.initial_target = initial_velocity * half_point_time
-    self.trajectory_apex = vec(self.initial_target.x,
-                               self.initial_target.y + half_point_dropoff)
-
-    self.v_speed = self.travel_time * self.gravity / 2
-    new_angle = math.atan2(self.trajectory_apex.y - position.y,
-                           self.trajectory_apex.x - position.x)
-    new_direction = vec(1, 0).rotate_rad(new_angle)
-    new_travel_distance = position.distance_to(self.trajectory_apex)
-    new_travel_time = new_travel_distance / Grenade.speed
-    new_v_speed = new_travel_time * self.gravity / 2
-    
-    velocity = new_direction * Grenade.speed
-    velocity.y -= new_v_speed
-
-    super().__init__(owner, position, velocity, acceleration, size,
+    super().__init__(owner, position, self.velocity, acceleration, size,
                      self.damage, self.color)
 
   def update(self):
     super().update()
-    pygame.draw.circle(glb.SCREEN, glb.BLUE, self.trajectory_apex, 5)
+    self.vz += self.gravity
+    self.z += self.vz
+    scaled_z = self.z * glb.ISOMETRIC_SCALING
+    self.position.y += scaled_z
 
 
 class FrozenOrb(Projectile):
