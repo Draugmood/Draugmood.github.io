@@ -41,6 +41,7 @@ class Grenade(Projectile):
     self.damage = 20
     self.speed_decay = 0
     self.gravity = 0
+    self.true_position = vec(position)
     self.velocity = vec(direction) * self.speed
     self.z = 0
     self.vz = self.velocity.length() * math.tan(glb.PROJECTION_ANGLE)
@@ -49,11 +50,13 @@ class Grenade(Projectile):
                      self.damage, self.color)
 
   def update(self):
-    super().update()
     self.vz += self.gravity
     self.z += self.vz
     scaled_z = self.z * glb.ISOMETRIC_SCALING
-    self.position.y -= scaled_z
+    self.position.y = self.true_position.y + scaled_z
+    super().update()
+    self.true_position.x = self.position.x
+    self.true_position.y = self.position.y - scaled_z
 
 
 class FrozenOrb(Projectile):
