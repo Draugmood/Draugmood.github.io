@@ -36,15 +36,19 @@ class Projectile(Collidable):
 class Grenade(Projectile):
   speed = 10
 
-  def __init__(self, owner, position, direction, acceleration, size):
+  def __init__(self, owner, position, target, acceleration, size):
     self.color = glb.WHITE
     self.damage = 20
     self.speed_decay = 0
-    self.gravity = 0.5
-    self.true_position = vec(position)
-    self.velocity = vec(direction) * self.speed
     self.z = 0
-    self.vz = self.velocity.length() * math.tan(glb.PROJECTION_ANGLE)
+    self.gravity = 3
+    self.true_position = vec(position)
+    direction = target - position
+    range = direction.length()
+    self.velocity = vec(direction).normalize() * self.speed
+    flight_time = range / self.velocity.length()
+    
+    self.vz = 0.5 * self.gravity * flight_time
     
     super().__init__(owner, position, self.velocity, acceleration, size,
                      self.damage, self.color)
@@ -56,7 +60,7 @@ class Grenade(Projectile):
     self.velocity += self.acceleration
     self.true_position += self.velocity
     self.position = self.true_position
-    self.position.y = self.true_position.y - scaled_z
+    self.position.y -= scaled_z
     Projectile.update(self)
 
 
