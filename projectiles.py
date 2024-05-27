@@ -63,6 +63,10 @@ class Grenade(Projectile):
     self.position.y -= scaled_z
     Projectile.update(self)
 
+  def draw(self, surface):
+    super().draw(surface)
+    pygame.draw.circle(surface, glb.SHADOW, self.true_position, self.size[0]
+
 
 class FrozenOrb(Projectile):
   speed = 5
