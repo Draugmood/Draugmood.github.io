@@ -16,7 +16,7 @@ BLACK = pg.Color(0, 0, 0)
 WHITE = pg.Color(255, 255, 255)
 GREEN = pg.Color(0, 128, 0)
 SHADOW = pg.Color(0, 0, 0, 50)
-SLATEGREY = pg.Color("slategrey")
+DARKSLATEGREY = pg.Color("darkslategrey")
 
 
 # Text rendering
