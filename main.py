@@ -104,7 +104,7 @@ def get_enemy_position_around_player(player_position, distance):
 async def main():
 
   background = pygame.Surface(glb.SCREEN.get_size()).convert()
-  background.fill(glb.BLACK)
+  background.fill(glb.SLATEGREY)
 
   screen_center = vec(glb.SCREEN.get_size()) / 2
 
