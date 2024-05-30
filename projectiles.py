@@ -73,12 +73,12 @@ class Grenade(Projectile):
       self.size[0]*scaleup,
       self.size[1]*glb.ISOMETRIC_SCALING*scaleup
     )
-    if 0 <= self.z < 256:
-      shadow_color.r = int(self.z)
-      shadow_color.r = 200
+    shadow_z = self.z / 10
+    if 0 <= shadow_z < 256:
+      shadow_color.a = int(shadow_z)
 
-    glb.print_text(f"{self.z}", glb.WHITE, glb.NORMAL_FONT,
-                   surface, (2000, 800), align="center")
+    glb.print_text(f"{shadow_z:.2f}", glb.WHITE, glb.NORMAL_FONT,
+                   surface, (2000, 1200), align="topleft")
 
     shadow_surface = pygame.Surface(shadow_rect.size, pygame.SRCALPHA)
     pygame.draw.ellipse(shadow_surface, shadow_color, shadow_rect)
