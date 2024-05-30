@@ -75,9 +75,12 @@ class Grenade(Projectile):
     )
     if 0 <= self.z < 256:
       shadow_color.a = int(self.z)
-      
+
+    shadow_surface = pygame.Surface(shadow_rect.size, pygame.SRCALPHA)
     pygame.draw.ellipse(surface, shadow_color, shadow_rect)
 
+    glb.SCREEN.blit(shadow_surface, shadow_rect)
+    
 
 class FrozenOrb(Projectile):
   speed = 5
