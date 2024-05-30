@@ -66,9 +66,17 @@ class Grenade(Projectile):
   def draw(self, surface):
     super().draw(surface)
     shadow_color = glb.SHADOW
-    if self.z < 256:
-      shadow_color.a = self.z
-    pygame.draw.circle(surface, shadow_color, self.true_position, self.size[0])
+    scaleup=10
+    shadow_rect = pygame.Rect(
+      self.true_position.x - self.size[0] // 2,
+      self.true_position.y - (self.size[1] // 2)*glb.ISOMETRIC_SCALING,
+      self.size[0]*scaleup,
+      self.size[1]*glb.ISOMETRIC_SCALING*scaleup
+    )
+    if 0 <= self.z < 256:
+      shadow_color.a = int(self.z)
+      
+    pygame.draw.ellipse(surface, shadow_color, shadow_rect)
 
 
 class FrozenOrb(Projectile):

@@ -76,9 +76,13 @@ def handle_events(player, projectile_list):
       case pygame.MOUSEBUTTONDOWN:
         match event.button:
           case 1:
-            ice_bolt = IceBolt(player, player.position, aim(player.position),
-                               (0, 0), (5, 5))
-            projectile_list.append(ice_bolt)
+            #ice_bolt = IceBolt(player, player.position, aim(player.position),
+                               #(0, 0), (5, 5))
+            #projectile_list.append(ice_bolt)
+            grenade = Grenade(player, player.position,
+                              vec(pygame.mouse.get_pos()),
+                              (0, 0), (10, 10))
+            projectile_list.append(grenade)
 
           case 3:
             frozen_orb = FrozenOrb(player, player.position,
@@ -147,16 +151,32 @@ async def main():
       collidable.update()
       collidable.draw(glb.SCREEN)
 
-    handle_collisions(player, collidables, projectiles)
-    """ test code for projectiles
-    projectiles.append(FrozenOrb(player,
-       player.position,
-       player.position.normalize()*glb.PROJECTILE_SPEED,
-       (0, 0),
-       (20, 20)))
+    col1 = pygame.Color(0, 0, 0, 50)
+    col2 = pygame.Color(0, 0, 0, 200)
 
-    print(f"Projectiles: {len(projectiles)}")
-    print(projectiles[len(projectiles)-1].viable)"""
+    target_rect1 = pygame.Rect((player.position.x-100, player.position.y),
+                              (0, 0)).inflate((200, 200))
+    shape_surf1 = pygame.Surface(target_rect1.size, pygame.SRCALPHA)
+    pygame.draw.circle(shape_surf1, col1, (100, 100), 100)
+    
+    target_rect2 = pygame.Rect((player.position.x+100, player.position.y),
+      (0, 0)).inflate((200, 200))
+    shape_surf2 = pygame.Surface(target_rect2.size, pygame.SRCALPHA)
+    pygame.draw.circle(shape_surf2, col2, (100, 100), 100)
+
+    glb.SCREEN.blit(shape_surf1, target_rect1)
+    glb.SCREEN.blit(shape_surf2, target_rect2)
+    """pygame.draw.circle(glb.SCREEN,
+                       col1,
+                       (player.position.x-100, player.position.y),
+                       100)
+
+    pygame.draw.circle(glb.SCREEN,
+                      col2,
+                      (player.position.x+100, player.position.y),
+                      100)"""
+
+    handle_collisions(player, collidables, projectiles)
 
     collidables = [
         collidable for collidable in collidables
