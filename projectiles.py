@@ -77,6 +77,9 @@ class Grenade(Projectile):
       shadow_color.r = int(self.z)
       shadow_color.r = 200
 
+    glb.print_text(f"{self.z}", glb.WHITE, glb.NORMAL_FONT,
+                   surface, (2000, 800), align="center")
+
     shadow_surface = pygame.Surface(shadow_rect.size, pygame.SRCALPHA)
     pygame.draw.ellipse(shadow_surface, shadow_color, shadow_rect)
 
