@@ -75,7 +75,7 @@ class Grenade(Projectile):
     )
     shadow_z = self.z / 10
     if 0 <= shadow_z < 256:
-      shadow_color.a = int(shadow_z)
+      shadow_color.a = int(255-shadow_z)
 
     glb.print_text(f"{shadow_z:.2f}", glb.WHITE, glb.NORMAL_FONT,
                    surface, (2000, 1200), align="topleft")
