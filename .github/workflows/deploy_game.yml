@@ -3,10 +3,6 @@ on:
   push:
     branches:
       - main
-    paths:
-      - 'app1/**'
-      - '.github/workflows/deploy.yml'
-      - 'index.html'
   workflow_dispatch:
 permissions:
   contents: write
@@ -34,7 +30,7 @@ jobs:
         echo "Changed files: ${CHANGED_FILES}"
 
     - name: Build and Deploy App 1
-      if: contains(env.CHANGED_FILES, 'app1/')
+      if: contains(env.CHANGED_FILES, '*')
       run: |
         echo "Building App 1..."
         python -m pygbag --template $GITHUB_WORKSPACE/pygbag/template.tmpl --build $GITHUB_WORKSPACE/app1/main.py --output $GITHUB_WORKSPACE/build/app1
