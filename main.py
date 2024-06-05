@@ -135,7 +135,7 @@ async def main():
                        player.position,
                        glb.ENEMY_SPAWN_RANGE,
                        width=1)
-    # just drew this circle, enemies are spawning around player at this rad
+    # just drew this circle, enemies are spawning around player at this rad TEST
 
     for projectile in projectiles:
       projectile.update()
