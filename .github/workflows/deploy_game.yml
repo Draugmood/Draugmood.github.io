@@ -33,7 +33,7 @@ jobs:
       if: env.CHANGED_FILES
       run: |
         echo "Building App 1..."
-        python -m pygbag --template $GITHUB_WORKSPACE/pygbag/template.tmpl --build $GITHUB_WORKSPACE/main.py --output $GITHUB_WORKSPACE/build/app1
+        python -m pygbag --template $GITHUB_WORKSPACE/pygbag/template.tmpl --build $GITHUB_WORKSPACE/main.py
         echo "App 1 built."
 
     # Commented out fetching and building App 2
