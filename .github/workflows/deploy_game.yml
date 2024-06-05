@@ -28,7 +28,9 @@ jobs:
       id: changes
       run: |
         git fetch origin main
-        echo "CHANGED_FILES=$(git diff --name-only HEAD origin/main)" >> $GITHUB_ENV
+        CHANGED_FILES=$(git diff --name-only HEAD origin/main)
+        echo "CHANGED_FILES=${CHANGED_FILES}" >> $GITHUB_ENV
+        echo "Changed files: ${CHANGED_FILES}"
 
     - name: Build and Deploy App 1
       if: contains(env.CHANGED_FILES, 'app1/')
