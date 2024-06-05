@@ -61,3 +61,5 @@ jobs:
         branch: gh-pages
         folder: build/web
         target-folder: app1
+        clean: true
+        force: true
