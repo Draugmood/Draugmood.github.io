@@ -38,6 +38,7 @@ class Grenade(Projectile):
 
   def __init__(self, owner, position, target, acceleration, size):
     self.color = glb.WHITE
+    self.shadow_color = pygame.Color(glb.SHADOW)
     self.damage = 20
     self.speed_decay = 0
     self.z = 0
@@ -46,9 +47,10 @@ class Grenade(Projectile):
     direction = target - position
     range = direction.length()
     self.velocity = vec(direction).normalize() * self.speed
-    flight_time = range / self.velocity.length()
+    self.flight_time = range / self.velocity.length()
+    self.lifespan = self.flight_time/32
     
-    self.vz = 0.5 * self.gravity * flight_time
+    self.vz = 0.5 * self.gravity * self.flight_time
     
     super().__init__(owner, position, self.velocity, acceleration, size,
                      self.damage, self.color)
@@ -65,25 +67,39 @@ class Grenade(Projectile):
 
   def draw(self, surface):
     super().draw(surface)
-    shadow_color = glb.SHADOW
-    scaleup=10
     shadow_rect = pygame.Rect(
-      self.true_position.x - self.size[0] // 2,
-      self.true_position.y - (self.size[1] // 2)*glb.ISOMETRIC_SCALING,
-      self.size[0]*scaleup,
-      self.size[1]*glb.ISOMETRIC_SCALING*scaleup
+      self.true_position.x - self.size[0]/2,
+      self.true_position.y - (self.size[1])*glb.ISOMETRIC_SCALING,
+      self.size[0],
+      self.size[1]*glb.ISOMETRIC_SCALING
     )
-    shadow_z = self.z / 10
-    if 0 <= shadow_z < 256:
-      shadow_color.a = int(255-shadow_z)
 
-    glb.print_text(f"{shadow_z:.2f}", glb.WHITE, glb.NORMAL_FONT,
-                   surface, (2000, 1200), align="topleft")
-    glb.print_text(f"{shadow_color.a}", glb.WHITE, glb.NORMAL_FONT,
-       surface, (2000, 1220), align="topleft")
+    if 0 <= (self.z / 3) < 256:
+      self.shadow_color.a = int(255-(self.z / 3))
+
+    glb.print_text(f"{self.flight_time}",
+                   glb.WHITE,
+                   glb.NORMAL_FONT,
+                   glb.SCREEN,
+                   (1600, 740),
+                   align="topleft")
+    
+    glb.print_text(f"{self.lifespan}",
+                   glb.WHITE,
+                   glb.NORMAL_FONT,
+                   glb.SCREEN,
+                   (1600, 720),
+                   align="topleft")
 
     shadow_surface = pygame.Surface(shadow_rect.size, pygame.SRCALPHA)
-    pygame.draw.ellipse(shadow_surface, shadow_color, shadow_rect)
+    # pygame.draw.circle(shadow_surface,
+    #                    self.shadow_color,
+    #                    shadow_surface.get_rect().center,
+    #                    self.size[0]/2)
+    
+    pygame.draw.ellipse(shadow_surface,
+                        self.shadow_color,
+                        shadow_surface.get_rect())
 
     glb.SCREEN.blit(shadow_surface, shadow_rect)
     

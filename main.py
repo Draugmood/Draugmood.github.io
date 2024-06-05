@@ -151,21 +151,13 @@ async def main():
       collidable.update()
       collidable.draw(glb.SCREEN)
 
-    col1 = pygame.Color(0, 0, 0, 50)
-    col2 = pygame.Color(0, 0, 0, 200)
+    glb.print_text(f"{pygame.mouse.get_pos()[0]}",
+                   glb.WHITE,
+                   glb.NORMAL_FONT,
+                   glb.SCREEN,
+                   (1600, 700),
+                   align="topleft")
 
-    target_rect1 = pygame.Rect((player.position.x-80, player.position.y),
-                              (0, 0)).inflate((200, 200))
-    shape_surf1 = pygame.Surface(target_rect1.size, pygame.SRCALPHA)
-    pygame.draw.circle(shape_surf1, col1, (100, 100), 100)
-    
-    target_rect2 = pygame.Rect((player.position.x+80, player.position.y),
-      (0, 0)).inflate((200, 200))
-    shape_surf2 = pygame.Surface(target_rect2.size, pygame.SRCALPHA)
-    pygame.draw.circle(shape_surf2, col2, (100, 100), 100)
-
-    glb.SCREEN.blit(shape_surf1, target_rect1)
-    glb.SCREEN.blit(shape_surf2, target_rect2)
     """pygame.draw.circle(glb.SCREEN,
                        col1,
                        (player.position.x-100, player.position.y),
