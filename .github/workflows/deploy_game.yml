@@ -53,6 +53,9 @@ jobs:
     #     python -m pygbag --template $GITHUB_WORKSPACE/pygbag/template.tmpl --build $GITHUB_WORKSPACE/app2/main.py --output $GITHUB_WORKSPACE/build/app2
     #     echo "App 2 built."
 
+    - name: Create Build Directory if Missing
+      run: mkdir -p $GITHUB_WORKSPACE/build
+
     - name: Copy Landing Page
       run: cp $GITHUB_WORKSPACE/index.html $GITHUB_WORKSPACE/build
 
