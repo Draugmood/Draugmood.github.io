@@ -27,8 +27,7 @@ jobs:
     - name: Determine Changed Files
       id: changes
       run: |
-        git fetch origin main
-        CHANGED_FILES=$(git diff --name-only HEAD origin/main)
+        CHANGED_FILES=$(git diff --name-only HEAD^ HEAD)
         echo "CHANGED_FILES=${CHANGED_FILES}" >> $GITHUB_ENV
         echo "Changed files: ${CHANGED_FILES}"
 
