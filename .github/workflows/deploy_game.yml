@@ -13,7 +13,7 @@ jobs:
     - name: Checkout Main Repository
       uses: actions/checkout@v4
       with:
-        fetch-depth: 2
+        fetch-depth: 0  # Fetch all history for proper diff comparisons
 
     - name: Checkout App 2 Repository
       uses: actions/checkout@v4
@@ -21,6 +21,8 @@ jobs:
         repository: Draugmood/TopDownECS
         token: ${{ secrets.PAT }}
         path: app2
+        ref: master  # Ensure we are checking out the master branch
+        fetch-depth: 0  # Fetch all history for proper diff comparisons
 
     - name: Set up Python
       uses: actions/setup-python@v4
@@ -33,9 +35,8 @@ jobs:
     - name: Determine Changed Files
       id: changes
       run: |
-        git fetch origin main
         CHANGED_FILES=$(git diff --name-only origin/main HEAD)
-        CHANGED_FILES_APP2=$(git -C $GITHUB_WORKSPACE/app2 diff --name-only origin/main HEAD)
+        CHANGED_FILES_APP2=$(git -C $GITHUB_WORKSPACE/app2 diff --name-only origin/master HEAD)
         echo "CHANGED_FILES=${CHANGED_FILES}" >> $GITHUB_ENV
         echo "CHANGED_FILES_APP2=${CHANGED_FILES_APP2}" >> $GITHUB_ENV
         echo "Changed files in main repo: ${CHANGED_FILES}"
