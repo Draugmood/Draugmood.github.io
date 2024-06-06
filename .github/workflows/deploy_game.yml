@@ -48,19 +48,22 @@ jobs:
       if: env.CHANGED_FILES
       run: |
         echo "Building App 1..."
+        mkdir -p $GITHUB_WORKSPACE/build/app1
         python -m pygbag --template $GITHUB_WORKSPACE/pygbag/template.tmpl $GITHUB_WORKSPACE/main.py
         echo "App 1 built."
-        mkdir -p $GITHUB_WORKSPACE/build/app1
         mv $GITHUB_WORKSPACE/main.py-web/* $GITHUB_WORKSPACE/build/app1
 
     - name: Build and Deploy App 2
       if: env.CHANGED_FILES_APP2
       run: |
         echo "Building App 2..."
+        mkdir -p $GITHUB_WORKSPACE/build/app2
         python -m pygbag --template $GITHUB_WORKSPACE/pygbag/template.tmpl $GITHUB_WORKSPACE/app2/main.py
         echo "App 2 built."
-        mkdir -p $GITHUB_WORKSPACE/build/app2
         mv $GITHUB_WORKSPACE/app2/main.py-web/* $GITHUB_WORKSPACE/build/app2
+
+    - name: Create Build Directory if Missing
+      run: mkdir -p $GITHUB_WORKSPACE/build
 
     - name: Copy Landing Page
       run: cp $GITHUB_WORKSPACE/index.html $GITHUB_WORKSPACE/build
