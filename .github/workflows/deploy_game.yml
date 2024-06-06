@@ -36,10 +36,12 @@ jobs:
         python -m pygbag --template $GITHUB_WORKSPACE/pygbag/template.tmpl --build $GITHUB_WORKSPACE/main.py
         echo "App 1 built."
 
-    
     - name: Fetch App 2 Repository
-      run: |
-        git clone https://github.com/Draugmood/TopDownECS.git $GITHUB_WORKSPACE/app2
+      uses: actions/checkout@v4
+      with:
+        repository: Draugmood/TopDownECS
+        token: ${{ secrets.PAT }}
+        path: app2
 
     - name: Build and Deploy App 2
       if: contains(env.CHANGED_FILES, 'app2/')
