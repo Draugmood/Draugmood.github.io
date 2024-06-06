@@ -76,13 +76,10 @@ def handle_events(player, projectile_list):
       case pygame.MOUSEBUTTONDOWN:
         match event.button:
           case 1:
-            #ice_bolt = IceBolt(player, player.position, aim(player.position),
-                               #(0, 0), (5, 5))
-            #projectile_list.append(ice_bolt)
-            grenade = Grenade(player, player.position,
-                              vec(pygame.mouse.get_pos()),
-                              (0, 0), (10, 10))
-            projectile_list.append(grenade)
+            ice_bolt = IceBolt(player, player.position, aim(player.position),
+                               (0, 0), (5, 5))
+            projectile_list.append(ice_bolt)
+
 
           case 3:
             frozen_orb = FrozenOrb(player, player.position,
