@@ -35,7 +35,9 @@ jobs:
     - name: Determine Changed Files
       id: changes
       run: |
+        git fetch origin main
         CHANGED_FILES=$(git diff --name-only origin/main HEAD)
+        git -C $GITHUB_WORKSPACE/app2 fetch origin master
         CHANGED_FILES_APP2=$(git -C $GITHUB_WORKSPACE/app2 diff --name-only origin/master HEAD)
         echo "CHANGED_FILES=${CHANGED_FILES}" >> $GITHUB_ENV
         echo "CHANGED_FILES_APP2=${CHANGED_FILES_APP2}" >> $GITHUB_ENV
@@ -62,6 +64,9 @@ jobs:
 
     - name: Copy Landing Page
       run: cp $GITHUB_WORKSPACE/index.html $GITHUB_WORKSPACE/build
+
+    - name: List Build Directory
+      run: ls -R $GITHUB_WORKSPACE/build
 
     - name: Deploy to GitHub Pages
       uses: JamesIves/github-pages-deploy-action@v4
