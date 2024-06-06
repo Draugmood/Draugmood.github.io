@@ -43,9 +43,12 @@ jobs:
         echo "CHANGED_FILES_APP2=${CHANGED_FILES_APP2}" >> $GITHUB_ENV
         echo "Changed files in main repo: ${CHANGED_FILES}"
         echo "Changed files in app2 repo: ${CHANGED_FILES_APP2}"
+      outputs:
+        changed_files: ${{ steps.changes.outputs.CHANGED_FILES }}
+        changed_files_app2: ${{ steps.changes.outputs.CHANGED_FILES_APP2 }}
 
     - name: Build and Deploy App 1
-      if: env.CHANGED_FILES
+      if: steps.changes.outputs.changed_files
       run: |
         echo "Building App 1..."
         mkdir -p $GITHUB_WORKSPACE/build/app1
@@ -54,7 +57,7 @@ jobs:
         mv $GITHUB_WORKSPACE/main.py-web/* $GITHUB_WORKSPACE/build/app1
 
     - name: Build and Deploy App 2
-      if: env.CHANGED_FILES_APP2
+      if: steps.changes.outputs.changed_files_app2
       run: |
         echo "Building App 2..."
         mkdir -p $GITHUB_WORKSPACE/build/app2
