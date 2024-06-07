@@ -1,4 +1,5 @@
 name: Build Game with Pygbag and publish to GitHub pages
+
 on:
   push:
     branches:
@@ -6,6 +7,7 @@ on:
   workflow_dispatch:
 permissions:
   contents: write
+
 jobs:
   build-deploy:
     runs-on: ubuntu-latest
@@ -44,6 +46,10 @@ jobs:
         echo "Changed files in main repo: ${CHANGED_FILES}"
         echo "Changed files in app2 repo: ${CHANGED_FILES_APP2}"
 
+    - name: Check for Trigger from Repo 2
+      id: check_trigger
+      run: echo "TRIGGERED_BY_REPO2=${{ github.event_name == 'workflow_dispatch' }}" >> $GITHUB_ENV
+
     - name: Build and Deploy App 1
       if: env.CHANGED_FILES
       run: |
@@ -54,16 +60,13 @@ jobs:
         mv $GITHUB_WORKSPACE/main.py-web/* $GITHUB_WORKSPACE/build/app1
 
     - name: Build and Deploy App 2
-      if: env.CHANGED_FILES_APP2
+      if: env.TRIGGERED_BY_REPO2 == 'true'
       run: |
         echo "Building App 2..."
         mkdir -p $GITHUB_WORKSPACE/build/app2
         python -m pygbag --template $GITHUB_WORKSPACE/pygbag/template.tmpl $GITHUB_WORKSPACE/app2/main.py
         echo "App 2 built."
         mv $GITHUB_WORKSPACE/app2/main.py-web/* $GITHUB_WORKSPACE/build/app2
-
-    - name: Create Build Directory if Missing
-      run: mkdir -p $GITHUB_WORKSPACE/build
 
     - name: Copy Landing Page
       run: cp $GITHUB_WORKSPACE/index.html $GITHUB_WORKSPACE/build
