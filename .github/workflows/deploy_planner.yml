@@ -36,7 +36,7 @@ jobs:
       run: mkdir -p $GITHUB_WORKSPACE/build/leagues-task-planner
 
     - name: Copy Vue App to Build Folder
-      run: cp -r leagues-task-planner/dist/* $GITHUB_WORKSPACE/build/leagues-task-planner
+      run: cp -r leagues-task-planner/dist/* $GITHUB_WORKSPACE/build
 
     - name: Copy Landing Page
       run: cp $GITHUB_WORKSPACE/leagues-task-planner/index.html $GITHUB_WORKSPACE/build
