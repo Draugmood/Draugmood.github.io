@@ -26,13 +26,12 @@ jobs:
         run: |
           cd leagues-task-planner
           npm run build
-          cd ..
 
       - name: Upload production-ready build files
         uses: actions/upload-artifact@v4
         with:
           name: production-files
-          path: ./leagues-task-planner/dist
+          path: leagues-task-planner/dist
 
   deploy:
     name: Deploy
@@ -45,10 +44,10 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: production-files
-          path: ./leagues-task-planner/dist
+          path: dist
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           personal_token: ${{ secrets.PAT }}
-          publish_dir: ./dist
+          publish_dir: dist
