@@ -39,7 +39,7 @@ jobs:
       run: cp -r leagues-task-planner/dist/* $GITHUB_WORKSPACE/build/leagues-task-planner
 
     - name: Copy Landing Page
-      run: cp $GITHUB_WORKSPACE/index.html $GITHUB_WORKSPACE/build
+      run: cp $GITHUB_WORKSPACE/leagues-task-planner/index.html $GITHUB_WORKSPACE/build
 
     - name: List Build Directory
       run: ls -R $GITHUB_WORKSPACE/build
