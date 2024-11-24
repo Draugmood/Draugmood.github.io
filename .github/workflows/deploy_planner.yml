@@ -1,40 +1,49 @@
-name: Build league task planner and deploy to github.io
+name: Deploy
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
 
 jobs:
   build:
-    permissions:
-      contents: read
-      pages: write
-      id-token: write
+    name: Build
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout
+      - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Setup NodeJS
+      - name: Setup Node
         uses: actions/setup-node@v4
+
+      - name: Install dependencies
+        uses: bahmutov/npm-install@HEAD
+
+      - name: Build project
+        run: npm run build
+
+      - name: Upload production-ready build files
+        uses: actions/upload-artifact@v4
         with:
-          node-version: 20
+          name: production-files
+          path: ./dist
 
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-        id: setup
+  deploy:
+    name: Deploy
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
 
-      - name: Build Pages
-        run: |
-          npm clean-install
-          npm run build
-        env:
-          VITE_BASE_URL: "${{steps.setup.outputs.base_url}}"
-
-      - name: Upload Pages Artifact
-        uses: actions/upload-pages-artifact@v3
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
         with:
-          path: dist
+          name: production-files
+          path: ./dist
 
-      - name: Deploy Pages
-        uses: actions/deploy-pages@v4
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
