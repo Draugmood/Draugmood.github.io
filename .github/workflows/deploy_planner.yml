@@ -32,6 +32,9 @@ jobs:
         cd leagues-task-planner
         npm run build
 
+    - name: Create Build Directory
+      run: mkdir -p $GITHUB_WORKSPACE/build/leagues-task-planner
+
     - name: Copy Vue App to Build Folder
       run: cp -r leagues-task-planner/dist/* $GITHUB_WORKSPACE/build/leagues-task-planner
 
