@@ -20,7 +20,7 @@ jobs:
       - name: Install dependencies
         uses: bahmutov/npm-install@HEAD
         with:
-          folder: leagues-task-planner
+          working-directory: leagues-task-planner
 
       - name: Build project
         run: npm run build
