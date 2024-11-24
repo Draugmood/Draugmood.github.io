@@ -24,12 +24,14 @@ jobs:
 
       - name: Build project
         run: npm run build
+        with:
+          working-directory: leagues-task-planner
 
       - name: Upload production-ready build files
         uses: actions/upload-artifact@v4
         with:
           name: production-files
-          path: ./dist
+          path: ./leagues-task-planner/dist
 
   deploy:
     name: Deploy
@@ -42,7 +44,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: production-files
-          path: ./dist
+          path: ./leagues-task-planner/dist
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
