@@ -1,4 +1,4 @@
-name: Build Game with Pygbag and publish to GitHub pages
+name: Build league task planner and deploy to github.io
 
 on:
   push:
