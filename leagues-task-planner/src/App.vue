@@ -8,18 +8,7 @@ import type { Task } from './types';
 const tasks = ref<Task[]>([
   { id: 1, title: 'Do X', details: ['Equipment A', 'Tool B'], completed: false },
   { id: 2, title: 'Do a Y', details: [], completed: false },
-  { id: 3, title: 'Buy Z', details: ['Shop A', 'Product B'], completed: false },{ id: 1, title: 'Do X', details: ['Equipment A', 'Tool B'], completed: false },
-  { id: 2, title: 'Do a Y', details: [], completed: false },
-  { id: 3, title: 'Buy Z', details: ['Shop A', 'Product B'], completed: false },{ id: 1, title: 'Do X', details: ['Equipment A', 'Tool B'], completed: false },
-  { id: 2, title: 'Do a Y', details: [], completed: false },
-  { id: 3, title: 'Buy Z', details: ['Shop A', 'Product B'], completed: false },{ id: 1, title: 'Do X', details: ['Equipment A', 'Tool B'], completed: false },
-  { id: 2, title: 'Do a Y', details: [], completed: false },
-  { id: 3, title: 'Buy Z', details: ['Shop A', 'Product B'], completed: false },{ id: 1, title: 'Do X', details: ['Equipment A', 'Tool B'], completed: false },
-  { id: 2, title: 'Do a Y', details: [], completed: false },
-  { id: 3, title: 'Buy Z', details: ['Shop A', 'Product B'], completed: false },{ id: 1, title: 'Do X', details: ['Equipment A', 'Tool B'], completed: false },
-  { id: 2, title: 'Do a Y', details: [], completed: false },
-  { id: 3, title: 'Buy Z', details: ['Shop A', 'Product B'], completed: false },
-]);
+  { id: 3, title: 'Buy Z', details: ['Shop A', 'Product B'], completed: false }]);
 
 const selectedTask = ref<Task | null>(null);
 
