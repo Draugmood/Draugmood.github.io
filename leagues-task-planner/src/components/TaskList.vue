@@ -2,7 +2,7 @@
 import { defineProps, defineEmits } from 'vue';
 import type { Task } from '../types';
 
-const props = defineProps<{
+defineProps<{
     tasks: Task[];
     selectedTaskId: number | null;
 }>();

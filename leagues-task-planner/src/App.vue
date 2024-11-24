@@ -42,7 +42,7 @@ const toggleTaskCompletion = (taskId: number) => {
       :tasks="tasks" 
       @selectTask="selectTask" 
       @toggleCompletion="toggleTaskCompletion"
-      :selectedTaskId="selectedTask?.id" 
+      :selectedTaskId="selectedTask?.id ?? null" 
     />
 
     <!-- Task Details Section -->
