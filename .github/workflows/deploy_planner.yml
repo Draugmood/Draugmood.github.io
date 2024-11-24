@@ -1,0 +1,67 @@
+name: Build Game with Pygbag and publish to GitHub pages
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+permissions:
+  contents: write
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Main Repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0  # Fetch all history for proper diff comparisons
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+    
+    - name: Install Vue Dependencies
+      run: |
+        cd leagues-task-planner
+        npm ci
+
+    - name: Build Vue App
+      run: |
+        cd leagues-task-planner
+        npm run build
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.x'
+
+    - name: Install Pygbag and Dependencies
+      run: |
+        python -m pip install pygbag
+        sudo apt-get update
+        sudo apt-get install -y ffmpeg
+
+    - name: Build Game App
+      run: |
+        echo "Building Game App..."
+        mkdir -p $GITHUB_WORKSPACE/build/games
+        python -m pygbag --template $GITHUB_WORKSPACE/pygbag/template.tmpl $GITHUB_WORKSPACE/Games/main.py
+        mv $GITHUB_WORKSPACE/Games/main.py-web/* $GITHUB_WORKSPACE/build/games
+
+    - name: Copy Vue App to Build Folder
+      run: cp -r leagues-task-planner/dist/* $GITHUB_WORKSPACE/build/leagues-task-planner
+
+    - name: Copy Landing Page
+      run: cp $GITHUB_WORKSPACE/index.html $GITHUB_WORKSPACE/build
+
+    - name: List Build Directory
+      run: ls -R $GITHUB_WORKSPACE/build
+
+    - name: Deploy to GitHub Pages
+      uses: JamesIves/github-pages-deploy-action@v4
+      with:
+        branch: gh-pages
+        folder: build
+        force: true
