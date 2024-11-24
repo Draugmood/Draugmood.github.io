@@ -2,51 +2,39 @@ name: Build league task planner and deploy to github.io
 
 on:
   push:
-    branches:
-      - main
-  workflow_dispatch:
-permissions:
-  contents: write
+    branches: [main]
 
 jobs:
-  build-deploy:
+  build:
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout Main Repository
-      uses: actions/checkout@v4
-      with:
-        fetch-depth: 0  # Fetch all history for proper diff comparisons
+      - name: Checkout
+        uses: actions/checkout@v4
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '18'
-    
-    - name: Install Vue Dependencies
-      run: |
-        cd leagues-task-planner
-        npm ci
+      - name: Setup NodeJS
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
 
-    - name: Build Vue App
-      run: |
-        cd leagues-task-planner
-        npm run build
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+        id: setup
 
-    - name: Create Build Directory
-      run: mkdir -p $GITHUB_WORKSPACE/build/leagues-task-planner
+      - name: Build Pages
+        run: |
+          npm clean-install
+          npm run build
+        env:
+          VITE_BASE_URL: "${{steps.setup.outputs.base_url}}"
 
-    - name: Copy Vue App to Build Folder
-      run: cp -r leagues-task-planner/dist/* $GITHUB_WORKSPACE/build
+      - name: Upload Pages Artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
 
-    - name: Copy Landing Page
-      run: cp $GITHUB_WORKSPACE/leagues-task-planner/index.html $GITHUB_WORKSPACE/build
-
-    - name: List Build Directory
-      run: ls -R $GITHUB_WORKSPACE/build
-
-    - name: Deploy to GitHub Pages
-      uses: JamesIves/github-pages-deploy-action@v4
-      with:
-        branch: gh-pages
-        folder: build
-        force: true
+      - name: Deploy Pages
+        uses: actions/deploy-pages@v4
